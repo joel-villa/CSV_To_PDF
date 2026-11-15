@@ -3,6 +3,9 @@
 ## OOPs
 
 - main()
+  - Settings 
+    - Construct with path to settings.json & default_settings.json
+    - Map of row number to fonts
   - Converter (.csv, .pdf, settings.json)
     - Loop through columns, loop through rows, use settings.json
     - Writer (may be overkill):
