@@ -30,3 +30,21 @@ class CLI:
              csv_path (Path): The path to the csv file
         """
         raise NotImplementedError
+
+def main() -> None:
+    """main for testing purposes"""
+
+    settings = Settings()
+    cli = CLI(settings)
+    path = cli.run
+    print(path)
+
+
+if __name__ == '__main__':
+    """main for testing purposes
+
+    Resources:
+        - Main:
+            https://docs.python.org/3/library/__main__.html
+    """
+    main()

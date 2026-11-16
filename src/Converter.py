@@ -32,3 +32,22 @@ class Converter:
             with the same name as the csv--do replacing handling)
     	"""
         raise NotImplementedError
+
+def main() -> None:
+    """main for testing purposes"""
+
+    settings = Settings()
+    converter = Converter(settings)
+    converter.convert(
+        csv=Path('~/Projects/Personal/CSV_To_PDF/resources.csv'),
+        pdf=Path('~/Projects/Personal/CSV_To_PDF/test_out.pdf'),
+    )
+
+if __name__ == '__main__':
+    """main for testing purposes
+
+    Resources:
+        - Main:
+            https://docs.python.org/3/library/__main__.html
+    """
+    main()

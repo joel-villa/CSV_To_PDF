@@ -1,14 +1,14 @@
 """The font + color of some text :D"""
 
 class Font:
-    _font: str
+    _font_name: str
     _size: int
     _rgb: tuple[int, int, int]
 
 
     def __init__(
         self,
-        font: str,
+        font_name: str,
         size: int,
         rgb: tuple[int, int, int]
     ) -> None:
@@ -19,18 +19,18 @@ class Font:
             size (int): Font size
             rbg (tuple [int, int, int]): rgb values
 	    """
-        self._font = font
+        self._font_name = font_name
         self._size = size
         self._rgb = rgb
 
     @property
-    def font(self) -> str:
+    def font_name(self) -> str:
         """A getter for the font
 
         Returns:
              font (str): The name of the font
 	    """
-        return self._font
+        return self._font_name
 
     @property
     def size(self) -> int:
@@ -49,3 +49,26 @@ class Font:
              rgb (tuple[int, int, int]): The rgb color
 	    """
         return self._rgb
+
+
+def main() -> None:
+    """main for testing purposes"""
+
+    font = Font(
+        font_name='Times New Roman',
+        size=24,
+        rgb=(0, 0, 0),
+    )
+
+    print(font.font_name)
+    print(font.size)
+    print(font.rgb)
+
+if __name__ == '__main__':
+    """main for testing purposes
+
+    Resources:
+        - Main:
+            https://docs.python.org/3/library/__main__.html
+    """
+    main()

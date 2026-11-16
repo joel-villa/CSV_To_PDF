@@ -54,3 +54,42 @@ class Settings:
              col_setting (ColumnSetting): The column settings for the column
 	"""
         return self._setting_map[column]
+
+def main() -> None:
+    """main for testing purposes"""
+
+    from src.Font import Font
+
+    settings = Settings()
+    print(settings.col_order)
+    num_cols = len(settings.col_order)
+
+    default_setting = ColumnSetting(
+        font=Font(
+            font_name='Times New Roman',
+            size=24,
+            rgb=(0, 0, 0),
+        ),
+        is_indicator=False,
+        additional_text=None,
+    )
+
+    for i in range(num_cols):
+        settings.update_setting(column=i, setting=default_setting)
+
+    for i in range(num_cols):
+        col_setting = settings.get_setting(i)
+        print(col_setting.font.font_name)
+        print(col_setting.font.size)
+        print(col_setting.font.rgb)
+        print(col_setting.additional_text)
+        print(col_setting.is_indicator)
+
+if __name__ == '__main__':
+    """main for testing purposes
+
+    Resources:
+        - Main:
+            https://docs.python.org/3/library/__main__.html
+    """
+    main()

@@ -52,3 +52,31 @@ class ColumnSetting:
              additional_text (str): Any additional text?
 	    """
         return self._additional_text
+
+def main() -> None:
+    """main for testing purposes"""
+
+    default_setting = ColumnSetting(
+        font=Font(
+            font_name='Times New Roman',
+            size=24,
+            rgb=(0, 0, 0),
+        ),
+        is_indicator=False,
+        additional_text=None,
+    )
+
+    print(default_setting.font.font_name)
+    print(default_setting.font.size)
+    print(default_setting.font.rgb)
+    print(default_setting.additional_text)
+    print(default_setting.is_indicator)
+
+if __name__ == '__main__':
+    """main for testing purposes
+
+    Resources:
+        - Main:
+            https://docs.python.org/3/library/__main__.html
+    """
+    main()
