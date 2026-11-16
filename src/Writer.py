@@ -24,12 +24,11 @@ class Writer:
 	    """
         raise NotImplementedError
 
-    def write_line(self, font: Font, text: str) -> None:
+    def write_line(self, text: str, font: Font) -> None:
         """Write the line into the pdf in the given font
 
         Args:
-            font (Font): The font of the text to write
             text (str): The text to put in the pdf
-
+            font (Font): The font of the text to write
 	    """
         raise NotImplementedError
