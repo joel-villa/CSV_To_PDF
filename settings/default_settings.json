@@ -1,1 +1,11 @@
-{}
+{
+  "1": {
+  "font": {
+    "font_name":"Times New Roman",
+    "size":24,
+    "rgb":[0, 0, 0]
+  },
+  "is_indicator": "False",
+  "additional_text": "None"
+}
+}
