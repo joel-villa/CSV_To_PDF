@@ -50,6 +50,18 @@ class Font:
 	    """
         return self._rgb
 
+    def to_dict(self) -> dict[str, Any]:
+        """Get the dictionary representation of this Font
+
+        Returns:
+             font_dict (dict[str, Any]): Dictionary representation of this Font
+	    """
+        return {
+            'font_name': self.font_name,
+            'size': self.size,
+            'rgb': self.rgb,
+        }
+
 
 def main() -> None:
     """main for testing purposes"""
