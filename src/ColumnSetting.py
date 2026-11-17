@@ -1,4 +1,6 @@
 """The settings for a singular column from the csv"""
+from typing import Any
+
 from src.Font import Font
 
 
@@ -52,6 +54,19 @@ class ColumnSetting:
              additional_text (str): Any additional text?
 	    """
         return self._additional_text
+
+    def to_dict(self) -> dict[str, Any]:
+        """Get the dictionary representation of a ColumnSetting
+
+        Returns:
+             setting_dict (dict[str, Any]): The dictionary representation of
+             this object
+    	"""
+        return {
+            'font': self.font.to_dict(),
+            'is_indicator': self.is_indicator,
+            'additional_text': self.additional_text
+        }
 
 def main() -> None:
     """main for testing purposes"""
