@@ -1,2 +1,9 @@
 {
-    "1": 
+    "col_order": [
+        0,
+        1
+    ],
+    "doc_title": "Lorem Ipsum",
+    "setting_map": {},
+    "default_map": {}
+}
