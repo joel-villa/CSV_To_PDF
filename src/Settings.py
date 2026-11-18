@@ -105,6 +105,12 @@ class Settings:
 	    """
         return self._col_order
 
+    def reset_col_order(self) -> None:
+        """Reset the column ordering (just increasing)"""
+        num_cols = len(self.col_order)
+        self._col_order = list(range(num_cols))
+        self.__save_settings()
+
     def swap_cols(self, col_one: int, col_two: int) -> None:
         """Swap the column ordering of the two columns
 
@@ -115,6 +121,7 @@ class Settings:
         temp = self._col_order[col_one]
         self.col_order[col_one] = self._col_order[col_two]
         self.col_order[col_two] = temp
+        self.__save_settings()
 
     def get_default(self, column: int) -> ColumnSetting:
         """Get the default settings for a column
@@ -209,6 +216,8 @@ def main() -> None:
         col_one=0,
         col_two=1,
     )
+    print(f"col_order: {settings.col_order}")
+    settings.reset_col_order()
     print(f"col_order: {settings.col_order}")
 
 if __name__ == '__main__':
