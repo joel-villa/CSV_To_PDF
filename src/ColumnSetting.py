@@ -74,6 +74,9 @@ class ColumnSetting:
 
         Returns:
             string (str): string represenatation
+        Resources:
+            - dict to str:
+                https://www.geeksforgeeks.org/python/python-convert-dictionary-object-into-string/
         """
         dict = self.to_dict()
         return str(dict)
