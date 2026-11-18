@@ -91,6 +91,16 @@ class Font:
             'rgb': self.rgb,
         }
 
+    def to_string(self) -> str:
+        """String representation of this Font
+
+        Args:
+            name (type): Description
+
+        Returns:
+             font_str (str): String representation fo this font
+	    """
+        return str(self.to_dict())
 
 def main() -> None:
     """main for testing purposes"""
