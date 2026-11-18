@@ -70,7 +70,7 @@ class Settings:
         json_dict = {}
         json_dict['col_order'] = self._col_order
         json_dict['doc_title'] = self._doc_title
-        json_dict['title_font'] = self.title_font.to_dict
+        json_dict['title_font'] = self.title_font.to_dict()
         json_dict['setting_map'] = setting_map
         json_dict['default_map'] = default_map
 
@@ -242,12 +242,13 @@ def main() -> None:
     settings.reset_col_order()
     print(f"col_order: {settings.col_order}")
 
-    print(f"Title Font: {settings.title_font.to_string}")
+    settings.title_font = Font()
+    print(f"Title Font: {settings.title_font.to_string()}")
     settings.title_font = Font(
         size=48,
         is_bold=True,
     )
-    print(f"Title Font: {settings.title_font.to_string}")
+    print(f"Title Font: {settings.title_font.to_string()}")
 
 if __name__ == '__main__':
     """main for testing purposes
