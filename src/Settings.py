@@ -157,9 +157,9 @@ class Settings:
 
             num_cols = len(self.col_order)
             self._col_order.append(num_cols)
-
             # Creating new column setting, spooky
             warn(f"Column {column}, is not currently in settings, adding it is also setting as default.")
+            self._default_map[column] = setting
 
         self._setting_map[column] = setting
         self.__save_settings()
