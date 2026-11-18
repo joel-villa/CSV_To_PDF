@@ -187,7 +187,7 @@ def main() -> None:
     from src.Font import Font
 
     settings = Settings()
-    num_cols = 2
+    num_cols = 7
 
     default_setting = ColumnSetting()
 
