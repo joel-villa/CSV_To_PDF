@@ -1,16 +1,22 @@
 """The font + color of some text :D"""
 
+from typing import Any
+
+
 class Font:
     _font_name: str
     _size: int
     _rgb: tuple[int, int, int]
-
+    _is_bold: bool
+    _is_italic: bool
 
     def __init__(
         self,
-        font_name: str,
-        size: int,
-        rgb: tuple[int, int, int]
+        font_name: str = "Times New Roman",
+        size: int = 24,
+        rgb: tuple[int, int, int] = (0, 0, 0),
+        is_bold: bool = False,
+        is_italic: bool = False,
     ) -> None:
         """Create the Font
 
@@ -18,10 +24,14 @@ class Font:
             font (str): The name of the font
             size (int): Font size
             rbg (tuple [int, int, int]): rgb values
+            is_bold (bool): is the font bold?
+            is_italic (bool): italics?
 	    """
         self._font_name = font_name
         self._size = size
         self._rgb = rgb
+        self._is_bold = is_bold
+        self._is_italic = is_italic
 
     @property
     def font_name(self) -> str:
@@ -49,6 +59,25 @@ class Font:
              rgb (tuple[int, int, int]): The rgb color
 	    """
         return self._rgb
+
+    @property
+    def is_bold(self) -> bool:
+        """A getter for if this font is bold
+
+        Returns:
+             is_bold (bool): Is the font bold?
+	"""
+        return self._is_bold
+
+
+    @property
+    def is_italic(self) -> bool:
+        """A getter for if this font is bold
+
+        Returns:
+             is_italic (bool): Is the font italic?
+	"""
+        return self._is_italic
 
     def to_dict(self) -> dict[str, Any]:
         """Get the dictionary representation of this Font
