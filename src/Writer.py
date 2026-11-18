@@ -1,6 +1,7 @@
 """For writing lines to a PDF (all ReportLab stuff goes here)"""
 
-from pathlib import Path
+from reportlab.pdfgen import canvas
+from reportlab.pdfgen.textobject import PDFTextObject
 
 from src.Font import Font
 
@@ -16,33 +17,70 @@ class Writer:
         - Python classing:
             https://docs.python.org/3/tutorial/classes.html
     """
-    def __init__(self, pdf_path: Path) -> None:
+
+    _pdf: canvas.Canvas
+    _text: PDFTextObject | None
+
+    def __init__(self, pdf_path: str) -> None:
         """Create the PDF Writer
 
         Args:
-            pdf_path (Path): Path to the pdf file to create
-	    """
-        raise NotImplementedError
+            pdf_path (str): Path to the pdf file to create
 
-    def write_line(self, text: str, font: Font) -> None:
+        Resrouces:
+            - String splitting:
+                https://www.geeksforgeeks.org/python/python-string-till-substring/
+	    """
+        self._pdf = canvas.Canvas(pdf_path)
+
+        # Ensure document title is not a path (no '/''s and no extension')
+        document_title = pdf_path.split('/')[-1]
+        doc_title_list = document_title.split('.')[:-1]
+        document_title = "".join(doc_title_list)
+        print(f"document_title: {document_title}") #TODO: delete this
+        self._pdf.setTitle(document_title)
+        self._text = None
+
+    def write_line(self, text: str, font: Font, is_title: bool = False) -> None:
         """Write the line into the pdf in the given font
 
         Args:
             text (str): The text to put in the pdf
             font (Font): The font of the text to write
 	    """
-        raise NotImplementedError
+        if is_title:
+            self._pdf.setFillColorRGB(*font.rgb)
+            self._pdf.setFont(
+                psfontname=font.font_name,
+                size=font.size,
+            )
+            self._pdf.drawCentredString(x=300, y=770, text=text)
+        else:
+            if self._text is None:
+                # Initializing the text box :D
+                self._text = self._pdf.beginText(40, 680)
 
+            self._text.setFillColorRGB(*font.rgb)
+            self._text.setFont(
+                psfontname=font.font_name,
+                size=font.size,
+            )
+            self._text.textLine(text=text)
+    def finish(self) -> None:
+        if self._text is not None:
+            self._pdf.drawText(self._text)
+
+        self._pdf.save()
 
 def main() -> None:
     """main for testing purposes"""
 
-    writer = Writer(Path("test"))
+    writer = Writer("test.pdf")
 
     fonts = [
-        'Times New Roman',
+        'Times-Roman',
         'Courier',
-        'Calibri'
+        'Helvetica'
     ]
     sizes = [
         24,
@@ -66,6 +104,8 @@ def main() -> None:
             text=text,
             font=font,
         )
+
+    writer.finish()
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ class Font:
 
     def __init__(
         self,
-        font_name: str = "Times New Roman",
+        font_name: str = "Times-Roman",
         size: int = 24,
         rgb: tuple[int, int, int] = (0, 0, 0),
         is_bold: bool = False,
@@ -69,14 +69,13 @@ class Font:
 	"""
         return self._is_bold
 
-
     @property
     def is_italic(self) -> bool:
         """A getter for if this font is bold
 
         Returns:
              is_italic (bool): Is the font italic?
-	"""
+	    """
         return self._is_italic
 
     def to_dict(self) -> dict[str, Any]:
