@@ -57,8 +57,6 @@ class Settings:
 
     def __save_settings(self) -> None:
         """Save the settings to the settings path"""
-        print(f"in save_settings: {self._setting_map}")
-
         setting_map = {}
         default_map = {}
         for json_map, self_map in zip([setting_map, default_map], [self._setting_map, self._default_map]):
