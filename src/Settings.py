@@ -14,6 +14,7 @@ class Settings:
     _setting_map: dict[int, ColumnSetting]
     _default_map: dict[int, ColumnSetting]
     _doc_title: str
+    _title_font: Font #TODO: add this
     _col_order: list[int]
     _PATH: Path = Path("settings/settings.json")
 
@@ -24,6 +25,7 @@ class Settings:
         self._default_map = {}
         self._col_order = []
         self._doc_title = ""
+        self._title_font = Font()
         self.__load_settings()
 
 
@@ -42,6 +44,8 @@ class Settings:
             #TODO: finish settings reading + writing implementation
             self._col_order = setting_dict['col_order']
             self._doc_title = setting_dict['doc_title']
+
+            self._title_font = Font(**setting_dict['title_font'])
 
             setting_map = setting_dict['setting_map']
             default_map = setting_dict['default_map']
@@ -66,6 +70,7 @@ class Settings:
         json_dict = {}
         json_dict['col_order'] = self._col_order
         json_dict['doc_title'] = self._doc_title
+        json_dict['title_font'] = self.title_font.to_dict
         json_dict['setting_map'] = setting_map
         json_dict['default_map'] = default_map
 
@@ -92,6 +97,25 @@ class Settings:
                 https://realpython.com/python-property/#providing-write-only-attributes
         """
         self._doc_title = text
+        self.__save_settings()
+
+    @property
+    def title_font(self) -> Font:
+        """A getter for the doc title font
+
+        Returns:
+             title_font (Font): The title font
+	    """
+        return self._title_font
+
+    @title_font.setter
+    def title_font(self, font: Font) -> None:
+        """A setter for the title font
+
+        Args:
+            font (Font): The title font
+	    """
+        self._title_font = font
         self.__save_settings()
 
     @property
