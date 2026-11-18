@@ -89,6 +89,8 @@ class Font:
             'font_name': self.font_name,
             'size': self.size,
             'rgb': self.rgb,
+            'is_bold': self.is_bold,
+            'is_italic': self.is_italic,
         }
 
     def to_string(self) -> str:
