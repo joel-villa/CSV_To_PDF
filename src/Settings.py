@@ -242,6 +242,13 @@ def main() -> None:
     settings.reset_col_order()
     print(f"col_order: {settings.col_order}")
 
+    print(f"Title Font: {settings.title_font.to_string}")
+    settings.title_font = Font(
+        size=48,
+        is_bold=True,
+    )
+    print(f"Title Font: {settings.title_font.to_string}")
+
 if __name__ == '__main__':
     """main for testing purposes
 
