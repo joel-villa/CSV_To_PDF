@@ -9,7 +9,17 @@
         6
     ],
     "doc_title": "Lorem Ipsum",
-    "title_font": {},
+    "title_font": {
+        "font_name": "Times New Roman",
+        "size": 48,
+        "rgb": [
+            0,
+            0,
+            0
+        ],
+        "is_bold": true,
+        "is_italic": false
+    },
     "setting_map": {
         "0": {
             "font": {
@@ -19,7 +29,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -32,7 +44,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -45,7 +59,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -58,7 +74,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -71,7 +89,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -84,7 +104,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -97,7 +119,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -112,7 +136,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -125,7 +151,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -138,7 +166,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -151,7 +181,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -164,7 +196,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -177,7 +211,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
@@ -190,7 +226,9 @@
                     0,
                     0,
                     0
-                ]
+                ],
+                "is_bold": false,
+                "is_italic": false
             },
             "is_indicator": false,
             "additional_text": null
