@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 from warnings import warn
 
-from stale.ColumnSetting import ColumnSetting
-from stale.Font import Font
+from src.ColumnSetting import ColumnSetting
+from src.Font import Font
 
 
 class Settings:
@@ -208,7 +208,7 @@ class Settings:
 def main() -> None:
     """main for testing purposes"""
 
-    from stale.Font import Font
+    from src.Font import Font
 
     settings = Settings()
     num_cols = 7

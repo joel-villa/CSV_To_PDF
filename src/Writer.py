@@ -3,7 +3,7 @@
 from reportlab.pdfgen import canvas
 from reportlab.pdfgen.textobject import PDFTextObject
 
-from stale.Font import Font
+from src.Font import Font
 
 
 class Writer:
