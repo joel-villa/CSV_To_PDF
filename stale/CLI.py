@@ -1,4 +1,5 @@
 """The Command Line Interface"""
+
 from pathlib import Path
 
 from stale.Settings import Settings
@@ -31,6 +32,7 @@ class CLI:
         """
         raise NotImplementedError
 
+
 def main() -> None:
     """main for testing purposes"""
 
@@ -40,7 +42,7 @@ def main() -> None:
     print(path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """main for testing purposes
 
     Resources:

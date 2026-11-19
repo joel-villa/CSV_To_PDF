@@ -1,4 +1,5 @@
 """The settings for a singular column from the csv"""
+
 from typing import Any
 
 from stale.Font import Font
@@ -23,7 +24,7 @@ class ColumnSetting:
             font (Font): The font of this column
             is_indicator (bool):  True -> row is a boolean value
             additional_text (str): Any additional text?
-	    """
+        """
         if font is None:
             font = Font()
         self._font = font
@@ -36,7 +37,7 @@ class ColumnSetting:
 
         Returns:
              font (Font): The font of this column
-	    """
+        """
         return self._font
 
     @property
@@ -45,7 +46,7 @@ class ColumnSetting:
 
         Returns:
              is_indicator (bool):  True -> row is a boolean value
-	    """
+        """
         return self._is_indicator
 
     @property
@@ -54,7 +55,7 @@ class ColumnSetting:
 
         Returns:
              additional_text (str): Any additional text?
-	    """
+        """
         return self._additional_text
 
     def to_dict(self) -> dict[str, Any]:
@@ -63,12 +64,13 @@ class ColumnSetting:
         Returns:
              setting_dict (dict[str, Any]): The dictionary representation of
              this object
-    	"""
+        """
         return {
-            'font': self.font.to_dict(),
-            'is_indicator': self.is_indicator,
-            'additional_text': self.additional_text
+            "font": self.font.to_dict(),
+            "is_indicator": self.is_indicator,
+            "additional_text": self.additional_text,
         }
+
     def to_string(self) -> str:
         """Get the string representation of this setting
 
@@ -87,7 +89,7 @@ def main() -> None:
 
     default_setting = ColumnSetting(
         font=Font(
-            font_name='Times New Roman',
+            font_name="Times New Roman",
             size=24,
             rgb=(0, 0, 0),
         ),
@@ -101,7 +103,8 @@ def main() -> None:
     print(default_setting.additional_text)
     print(default_setting.is_indicator)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     """main for testing purposes
 
     Resources:

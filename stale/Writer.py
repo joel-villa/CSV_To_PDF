@@ -30,14 +30,14 @@ class Writer:
         Resrouces:
             - String splitting:
                 https://www.geeksforgeeks.org/python/python-string-till-substring/
-	    """
+        """
         self._pdf = canvas.Canvas(pdf_path)
 
         # Ensure document title is not a path (no '/''s and no extension')
-        document_title = pdf_path.split('/')[-1]
-        doc_title_list = document_title.split('.')[:-1]
+        document_title = pdf_path.split("/")[-1]
+        doc_title_list = document_title.split(".")[:-1]
         document_title = "".join(doc_title_list)
-        print(f"document_title: {document_title}") #TODO: delete this
+        print(f"document_title: {document_title}")  # TODO: delete this
         self._pdf.setTitle(document_title)
         self._text = None
 
@@ -47,7 +47,7 @@ class Writer:
         Args:
             text (str): The text to put in the pdf
             font (Font): The font of the text to write
-	    """
+        """
         if is_title:
             self._pdf.setFillColorRGB(*font.rgb)
             self._pdf.setFont(
@@ -66,27 +66,21 @@ class Writer:
                 size=font.size,
             )
             self._text.textLine(text=text)
+
     def finish(self) -> None:
         if self._text is not None:
             self._pdf.drawText(self._text)
 
         self._pdf.save()
 
+
 def main() -> None:
     """main for testing purposes"""
 
     writer = Writer("test.pdf")
 
-    fonts = [
-        'Times-Roman',
-        'Courier',
-        'Helvetica'
-    ]
-    sizes = [
-        24,
-        32,
-        64
-    ]
+    fonts = ["Times-Roman", "Courier", "Helvetica"]
+    sizes = [24, 32, 64]
     rgbs = [
         (0, 0, 0),
         (255, 0, 0),
@@ -108,7 +102,7 @@ def main() -> None:
     writer.finish()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """main for testing purposes
 
     Resources:

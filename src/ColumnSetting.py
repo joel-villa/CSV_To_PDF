@@ -1,5 +1,6 @@
 """The setting for a singular CSV column"""
 
+
 class ColumnSetting:
     """The settings of a column"""
 
@@ -26,7 +27,7 @@ class ColumnSetting:
             indicator_text (str | None): Is this column an indicator one? If
             so it has some default text
             read_only (bool): Is this Column Setting not to be updated?
-	    """
+        """
         self._read_only = read_only
         self._is_bold = is_bold
         self._is_italic = is_italic
@@ -44,7 +45,7 @@ class ColumnSetting:
 
         Returns:
             is_bold (bool): Should this column be bold?
-	    """
+        """
         return self._is_bold
 
     @property
@@ -53,7 +54,7 @@ class ColumnSetting:
 
         Returns:
             is_italic (bool): Should this coolumn be italicized
-	    """
+        """
         return self._is_italic
 
     @property
@@ -62,7 +63,7 @@ class ColumnSetting:
 
         Returns:
             contains_hyperlink (bool): Does this column contain a hyper link?
-	    """
+        """
         return self._contains_hyperlink
 
     @property
@@ -72,7 +73,7 @@ class ColumnSetting:
         Returns:
             indicator_text (str | None): Is this column an indicator one? If
             so it has some default text
-	    """
+        """
         return self._indicator_text
 
     @is_bold.setter
@@ -81,7 +82,7 @@ class ColumnSetting:
 
         Args:
             new_val (bool): The new value for the property
-	    """
+        """
         self.__check_authorization()
         self._is_bold = new_val
 
@@ -91,7 +92,7 @@ class ColumnSetting:
 
         Args:
             new_val (bool): The new value for the property
-	    """
+        """
         self.__check_authorization()
         self._is_italic = new_val
 
@@ -101,7 +102,7 @@ class ColumnSetting:
 
         Args:
             new_val (bool): The new value for the property
-	    """
+        """
         self.__check_authorization()
         self._contains_hyperlink = new_val
 
@@ -111,6 +112,6 @@ class ColumnSetting:
 
         Args:
             new_val (str): The new value for the property
-	    """
+        """
         self.__check_authorization()
         self._indicator_text = new_val

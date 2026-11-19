@@ -14,20 +14,18 @@ class Settings:
     _setting_map: dict[int, ColumnSetting]
     _default_map: dict[int, ColumnSetting]
     _doc_title: str
-    _title_font: Font #TODO: add this
+    _title_font: Font  # TODO: add this
     _col_order: list[int]
     _PATH: Path = Path("settings/settings.json")
 
     def __init__(self) -> None:
-        """Loads the setting map from the settings path
-	    """
+        """Loads the setting map from the settings path"""
         self._setting_map = {}
         self._default_map = {}
         self._col_order = []
         self._doc_title = ""
         self._title_font = Font()
         self.__load_settings()
-
 
     def __load_settings(self) -> None:
         """Load the settings from the settings path
@@ -41,38 +39,42 @@ class Settings:
         with open(self._PATH) as f:
             setting_dict = json.load(f)
 
-            #TODO: finish settings reading + writing implementation
-            self._col_order = setting_dict['col_order']
-            self._doc_title = setting_dict['doc_title']
+            # TODO: finish settings reading + writing implementation
+            self._col_order = setting_dict["col_order"]
+            self._doc_title = setting_dict["doc_title"]
 
-            self._title_font = Font(**setting_dict['title_font'])
+            self._title_font = Font(**setting_dict["title_font"])
 
-            setting_map = setting_dict['setting_map']
-            default_map = setting_dict['default_map']
+            setting_map = setting_dict["setting_map"]
+            default_map = setting_dict["default_map"]
 
-            for json_map, self_map in zip([setting_map, default_map], [self._setting_map, self._default_map]):
+            for json_map, self_map in zip(
+                [setting_map, default_map], [self._setting_map, self._default_map]
+            ):
                 for key, value in json_map.items():
-                    font = Font(**value['font'])
+                    font = Font(**value["font"])
                     self_map[int(key)] = ColumnSetting(
                         font=font,
-                        is_indicator=value['is_indicator'],
-                        additional_text=value['additional_text'],
+                        is_indicator=value["is_indicator"],
+                        additional_text=value["additional_text"],
                     )
 
     def __save_settings(self) -> None:
         """Save the settings to the settings path"""
         setting_map = {}
         default_map = {}
-        for json_map, self_map in zip([setting_map, default_map], [self._setting_map, self._default_map]):
+        for json_map, self_map in zip(
+            [setting_map, default_map], [self._setting_map, self._default_map]
+        ):
             for key, value in self_map.items():
                 json_map[key] = value.to_dict()
 
         json_dict = {}
-        json_dict['col_order'] = self._col_order
-        json_dict['doc_title'] = self._doc_title
-        json_dict['title_font'] = self.title_font.to_dict()
-        json_dict['setting_map'] = setting_map
-        json_dict['default_map'] = default_map
+        json_dict["col_order"] = self._col_order
+        json_dict["doc_title"] = self._doc_title
+        json_dict["title_font"] = self.title_font.to_dict()
+        json_dict["setting_map"] = setting_map
+        json_dict["default_map"] = default_map
 
         with open(self._PATH, "w") as json_file:
             json.dump(json_dict, json_file, indent=4)
@@ -83,7 +85,7 @@ class Settings:
 
         Returns:
              doc_title (str): The document title
-	    """
+        """
         return self._doc_title
 
     @doc_title.setter
@@ -105,7 +107,7 @@ class Settings:
 
         Returns:
              title_font (Font): The title font
-	    """
+        """
         return self._title_font
 
     @title_font.setter
@@ -114,7 +116,7 @@ class Settings:
 
         Args:
             font (Font): The title font
-	    """
+        """
         self._title_font = font
         self.__save_settings()
 
@@ -124,7 +126,7 @@ class Settings:
 
         Returns:
              col_order (list[int]): The ordering of the columns
-	    """
+        """
         return self._col_order
 
     def reset_col_order(self) -> None:
@@ -153,7 +155,7 @@ class Settings:
 
         Returns:
              def_setting (ColumnSetting): The default column setting
-	    """
+        """
         return self._default_map[column]
 
     def set_to_default(self, column: int) -> None:
@@ -161,15 +163,12 @@ class Settings:
 
         Args:
             column (int): The column to reset
-	    """
+        """
         self._setting_map[column] = self.get_default(column)
         self.__save_settings()
 
     def update_setting(
-        self,
-        column: int,
-        setting: ColumnSetting,
-        create_new: bool = False
+        self, column: int, setting: ColumnSetting, create_new: bool = False
     ) -> None:
         """Update the setting for the specific column
 
@@ -179,20 +178,23 @@ class Settings:
             create_new (bool): True -> allowing for new column insertion into the
             settings. False -> no such allowal. NOTE: inserting new -> setting
             default at the same time
-	    """
+        """
         if self._setting_map.get(column) is None:
             if create_new is False:
-                raise ValueError(f"Cannot insert column {column} unless parameter create_new is set to True")
+                raise ValueError(
+                    f"Cannot insert column {column} unless parameter create_new is set to True"
+                )
 
             num_cols = len(self.col_order)
             self._col_order.append(num_cols)
             # Creating new column setting, spooky
-            warn(f"Column {column}, is not currently in settings, adding it is also setting as default.")
+            warn(
+                f"Column {column}, is not currently in settings, adding it is also setting as default."
+            )
             self._default_map[column] = setting
 
         self._setting_map[column] = setting
         self.__save_settings()
-
 
     def get_setting(self, column: int) -> ColumnSetting:
         """Get the setting for a specific column
@@ -202,8 +204,9 @@ class Settings:
 
         Returns:
              col_setting (ColumnSetting): The column settings for the column
-	    """
+        """
         return self._setting_map[column]
+
 
 def main() -> None:
     """main for testing purposes"""
@@ -227,7 +230,7 @@ def main() -> None:
         setting=ColumnSetting(
             font=Font(font_name="This is garbage"),
             additional_text="lorem ipsum",
-        )
+        ),
     )
     print(f"col_setting 0: {settings.get_setting(0).to_string()}")
     settings.set_to_default(0)
@@ -250,7 +253,8 @@ def main() -> None:
     )
     print(f"Title Font: {settings.title_font.to_string()}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     """main for testing purposes
 
     Resources:

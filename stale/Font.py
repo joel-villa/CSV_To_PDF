@@ -26,7 +26,7 @@ class Font:
             rbg (tuple [int, int, int]): rgb values
             is_bold (bool): is the font bold?
             is_italic (bool): italics?
-	    """
+        """
         self._font_name = font_name
         self._size = size
         self._rgb = rgb
@@ -39,7 +39,7 @@ class Font:
 
         Returns:
              font (str): The name of the font
-	    """
+        """
         return self._font_name
 
     @property
@@ -48,7 +48,7 @@ class Font:
 
         Returns:
              size (int): The font size
-	    """
+        """
         return self._size
 
     @property
@@ -57,7 +57,7 @@ class Font:
 
         Returns:
              rgb (tuple[int, int, int]): The rgb color
-	    """
+        """
         return self._rgb
 
     @property
@@ -66,7 +66,7 @@ class Font:
 
         Returns:
              is_bold (bool): Is the font bold?
-	"""
+        """
         return self._is_bold
 
     @property
@@ -75,7 +75,7 @@ class Font:
 
         Returns:
              is_italic (bool): Is the font italic?
-	    """
+        """
         return self._is_italic
 
     def to_dict(self) -> dict[str, Any]:
@@ -83,13 +83,13 @@ class Font:
 
         Returns:
              font_dict (dict[str, Any]): Dictionary representation of this Font
-	    """
+        """
         return {
-            'font_name': self.font_name,
-            'size': self.size,
-            'rgb': self.rgb,
-            'is_bold': self.is_bold,
-            'is_italic': self.is_italic,
+            "font_name": self.font_name,
+            "size": self.size,
+            "rgb": self.rgb,
+            "is_bold": self.is_bold,
+            "is_italic": self.is_italic,
         }
 
     def to_string(self) -> str:
@@ -100,14 +100,15 @@ class Font:
 
         Returns:
              font_str (str): String representation fo this font
-	    """
+        """
         return str(self.to_dict())
+
 
 def main() -> None:
     """main for testing purposes"""
 
     font = Font(
-        font_name='Times New Roman',
+        font_name="Times New Roman",
         size=24,
         rgb=(0, 0, 0),
     )
@@ -116,7 +117,8 @@ def main() -> None:
     print(font.size)
     print(font.rgb)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     """main for testing purposes
 
     Resources:
