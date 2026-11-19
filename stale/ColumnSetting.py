@@ -1,7 +1,7 @@
 """The settings for a singular column from the csv"""
 from typing import Any
 
-from src.Font import Font
+from stale.Font import Font
 
 
 class ColumnSetting:

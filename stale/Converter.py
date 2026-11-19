@@ -1,7 +1,7 @@
 """For converting csv's to pdf's"""
 from pathlib import Path
 
-from src.Settings import Settings
+from stale.Settings import Settings
 
 
 class Converter:
