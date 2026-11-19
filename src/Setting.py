@@ -18,7 +18,7 @@ class Settings:
     _doc_title: str
     _track_date: bool
     _external_link: str
-    _PATH: Path = Path("settings/settings.json")
+    _PATH: Path = Path("settings.json")
 
     def __init__(self, read_only: bool = True) -> None:
         """Loads the setting map from the settings path
