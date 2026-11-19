@@ -1,7 +1,7 @@
 """The Command Line Interface"""
 from pathlib import Path
 
-from src.Settings import Settings
+from stale.Settings import Settings
 
 
 class CLI:
