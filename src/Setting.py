@@ -12,7 +12,6 @@ class Setting:
 
     _read_only: bool
     _track_date: bool
-    _header_col: int
     _doc_title: str
     _preamble: str
     _col_order: list[int]
@@ -28,7 +27,6 @@ class Setting:
         """
         self._read_only = read_only
         self._track_date = False
-        self._header_col = 0
         self._doc_title = ""
         self._preamble = ""
         self._col_order = []
@@ -41,7 +39,6 @@ class Setting:
             {
                 "col_order": self._col_order,
                 "doc_title": self._doc_title,
-                "header_col": self._header_col,
                 "track_date": self._track_date,
                 "preamble": self._preamble,
             }
@@ -69,7 +66,6 @@ class Setting:
 
             self._col_order = json_dict["col_order"]
             self._doc_title = json_dict["doc_title"]
-            self._header_col = json_dict["header_col"]
             self._preamble = json_dict["preamble"]
             self._track_date = json_dict["track_date"]
 
@@ -90,7 +86,6 @@ class Setting:
             "col_order": self._col_order,
             "default_map": default_dict,
             "doc_title": self._doc_title,
-            "header_col": self._header_col,
             "preamble": self._preamble,
             "setting_map": setting_dict,
             "track_date": self._track_date,
@@ -112,15 +107,6 @@ class Setting:
              read_only (bool): Can these settings be updated?
         """
         return self._read_only
-
-    @property
-    def header_col(self) -> int:
-        """A getter for header_col
-
-        Returns:
-             header_col (int): The column who will be the header
-        """
-        return self._header_col
 
     @property
     def n_cols(self) -> int:
@@ -181,20 +167,6 @@ class Setting:
         self._doc_title = text
         self.__save_settings()
 
-
-    @header_col.setter
-    def header_col(self, value: int) -> None:
-        """A setter for the header_col
-
-        Args:
-            value (int): the new header_col
-        """
-        self.__check_authorization()
-        if value not in range(self.n_cols):
-            raise IndexError(f"Column {value} out of bounds, {self.n_cols} columns total")
-
-        self._header_col = value
-        self.__save_settings()
 
     @track_date.setter
     def track_date(self, new_val: bool) -> None:
@@ -378,31 +350,6 @@ def test_setting(setting: Setting) -> None:
         num_exceptions += 1
 
     print(f"Preamble: {setting.preamble}")
-
-
-    possible_exceptions += 1
-    try:
-        setting.header_col = 2
-    except ValueError:
-        num_exceptions += 1
-
-    print(f"header_col: {setting.header_col}")
-
-    try:
-        setting.header_col = 100
-    except IndexError as e:
-        print(e)
-    except ValueError:
-        possible_exceptions += 1
-        num_exceptions += 1
-
-    possible_exceptions += 1
-    try:
-        setting.header_col = 0
-    except ValueError:
-        num_exceptions += 1
-
-    print(f"header_col: {setting.header_col}")
 
     print(f"num_exceptions: {num_exceptions} out of {possible_exceptions}")
 
