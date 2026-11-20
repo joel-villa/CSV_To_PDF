@@ -11,15 +11,19 @@ class SectionFactory:
 
     def __init__(
         self,
-        setting: Setting,
+        setting: Setting | None = None,
     ) -> None:
         """Create a Section Factory
 
         Args:
             setting (Setting): Configuration of file output
         """
-        self._setting = setting
         self._field_names = None
+
+        if setting is None:
+            self._setting = Setting()
+        else:
+            self._setting = setting
 
     @property
     def field_names(self):
@@ -64,5 +68,14 @@ class SectionFactory:
             raise NotImplementedError
         raise NotImplementedError
 
+def main() -> None:
+    """main for testing purposes"""
+    section_factory = SectionFactory()
+    section_factory.field_names = ["name", "age", "favorite color"]
+    print(section_factory.to_section(["Bob", "29", "purple"]))
+    print(section_factory.to_section(["Alice", "31", "cyan"]))
+    print(section_factory.to_section(["Sick Fuck", "30", "green"]))
 
-# TODO: test
+if __name__ == "__main__":
+    """main for testing purposes"""
+    main()
