@@ -298,66 +298,94 @@ def test_setting(setting: Setting) -> None:
     """
     num_cols = 3
     default_setting = ColumnSetting()
+    num_exceptions = 0
+    possible_exceptions = 0
 
+    possible_exceptions += 1
     try:
         for i in range(num_cols):
             setting.update_setting(column=i, setting=default_setting, create_new=True)
-    except ValueError as e:
-        print(e)
+    except ValueError:
+        num_exceptions += 1
 
     for i in range(num_cols):
         col_setting = setting.get_setting(i)
         print(f"col_setting {i}: {col_setting}")
 
+    possible_exceptions += 1
     try:
         setting.update_setting(
             column=0,
             setting=ColumnSetting(read_only=True, indicator_text="Just messing around"),
         )
-    except ValueError as e:
-        print(e)
+    except ValueError:
+        num_exceptions += 1
 
     print(f"col_setting 0: {setting.get_setting(0)}")
 
+    possible_exceptions += 1
     try:
         setting.set_to_default(0)
-    except ValueError as e:
-        print(e)
+    except ValueError:
+        num_exceptions += 1
 
     print(f"col_setting 0: {setting.get_setting(0)}")
 
     print(f"col_order: {setting.col_order}")
 
+    possible_exceptions += 1
     try:
         setting.swap_cols(
             col_one=0,
             col_two=1,
         )
-    except ValueError as e:
-        print(e)
+    except ValueError:
+        num_exceptions += 1
 
     print(f"col_order: {setting.col_order}")
 
+    possible_exceptions += 1
     try:
         setting.reset_col_order()
-    except ValueError as e:
-        print(e)
+    except ValueError:
+        num_exceptions += 1
 
     print(f"col_order: {setting.col_order}")
 
+    possible_exceptions += 1
     try:
         setting.doc_title = "A Terrible Tittle"
-    except ValueError as e:
-        print(e)
+    except ValueError:
+        num_exceptions += 1
 
     print(f"Title: {setting.doc_title}")
 
+    possible_exceptions += 1
     try:
         setting.preamble = "A terrifying preamble"
-    except ValueError as e:
-        print(e)
+    except ValueError:
+        num_exceptions += 1
 
     print(f"Preamble: {setting.preamble}")
+
+
+    possible_exceptions += 1
+    try:
+        setting.header_col = 2
+    except ValueError:
+        num_exceptions += 1
+
+    print(f"header_col: {setting.header_col}")
+
+    possible_exceptions += 1
+    try:
+        setting.header_col = 2
+    except ValueError:
+        num_exceptions += 1
+
+    print(f"header_col: {setting.header_col}")
+
+    print(f"num_exceptions: {num_exceptions} out of {possible_exceptions}")
 
 
 def main() -> None:
