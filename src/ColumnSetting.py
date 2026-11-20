@@ -1,6 +1,9 @@
 """The setting for a singular CSV column"""
 
 
+from typing import Any
+
+
 class ColumnSetting:
     """The settings of a column"""
 
@@ -38,6 +41,21 @@ class ColumnSetting:
         """Check that this column setting is allowed to be written to"""
         if self._read_only:
             raise ValueError("This Column Setting is read only")
+
+    def __str__(self) -> str:
+        """Get the string reperesentation of this column settiing
+
+        Args:
+            name (type): Description
+
+        Returns:
+            col_setting_string (str): String reperesentation
+
+        Resources:
+            toString in Python:
+                https://stackoverflow.com/questions/16768302/does-python-have-a-tostring-equivalent-and-can-i-convert-a-class-to-string
+        """
+        return str(self.to_dict())
 
     @property
     def is_bold(self) -> bool:
@@ -115,3 +133,61 @@ class ColumnSetting:
         """
         self.__check_authorization()
         self._indicator_text = new_val
+
+    def to_dict(self) -> dict[str, Any]:
+        """a dictionary representation of this column
+
+        Args:
+            name (type): Description
+
+        Returns:
+             col_setting_dict (dict): Dictionary representation of this setting
+	    """
+        return {
+            "is_bold": self._is_bold,
+            "is_italic": self._is_italic,
+            "contains_hyperlink": self._contains_hyperlink,
+            "indicator_text": self._indicator_text,
+        }
+
+def main() -> None:
+    """main for testing purposes"""
+    col_setting = ColumnSetting(read_only=False)
+    print(f"col_setting: {col_setting}")
+
+    col_setting.indicator_text = "is an indicator"
+    col_setting.is_bold = True
+    col_setting.is_italic = True
+
+    print(f"col_setting: {col_setting}")
+
+    immutable_col_setting = ColumnSetting(read_only=True, **col_setting.to_dict())
+
+    print(f"immutable_col_setting: {col_setting}")
+
+    try:
+        immutable_col_setting.indicator_text = None
+    except ValueError as e:
+        print(e)
+
+    try:
+        immutable_col_setting.is_bold = False
+    except ValueError as e:
+        print(e)
+
+    try:
+        immutable_col_setting.is_italic = False
+    except ValueError as e:
+        print(e)
+
+    try:
+        immutable_col_setting.contains_hyperlink = True
+    except ValueError as e:
+        print(e)
+
+    print(f"immutable_col_setting: {col_setting}")
+
+
+if __name__ == "__main__":
+    """main for testing purposes"""
+    main()
