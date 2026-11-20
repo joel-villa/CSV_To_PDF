@@ -1,6 +1,5 @@
 """Makes Sections based on some Settings"""
 
-
 from src.Setting import Setting
 
 
@@ -18,7 +17,7 @@ class SectionFactory:
 
         Args:
             setting (Setting): Configuration of file output
-    	"""
+        """
         self._setting = setting
         self._field_names = None
 
@@ -29,7 +28,7 @@ class SectionFactory:
 
         Returns:
              NOTHING, raises an error, field_names is write only!
-	    """
+        """
         raise AttributeError("field_names is write_only")
 
     @field_names.setter
@@ -42,10 +41,12 @@ class SectionFactory:
         Resources:
             - Write only class variables:
                 https://realpython.com/python-property/#providing-write-only-attributes
-	    """
+        """
         if self._field_names is not None:
-            #TODO: do we really need to do this? May be too handholdy (be cautious of throwing ERRORS is good coding practices)
-            raise AttributeError(f"field_names is not allowed to be overrideable, currently has value of: {self._field_names}")
+            # TODO: do we really need to do this? May be too handholdy (be cautious of throwing ERRORS is good coding practices)
+            raise AttributeError(
+                f"field_names is not allowed to be overrideable, currently has value of: {self._field_names}"
+            )
         self._field_names = value
 
     def to_section(self, field_values: list[str]) -> str:
@@ -57,10 +58,11 @@ class SectionFactory:
 
         Returns:
              section (str): The markdownified string representation of the row
-	    """
+        """
         if self._field_names is None:
             # TODO: handle Null field_names
             raise NotImplementedError
         raise NotImplementedError
 
-#TODO: test
+
+# TODO: test

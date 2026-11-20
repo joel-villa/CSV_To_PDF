@@ -1,6 +1,5 @@
 """The setting for a singular CSV column"""
 
-
 from typing import Any
 
 
@@ -142,13 +141,14 @@ class ColumnSetting:
 
         Returns:
              col_setting_dict (dict): Dictionary representation of this setting
-	    """
+        """
         return {
             "is_bold": self._is_bold,
             "is_italic": self._is_italic,
             "contains_hyperlink": self._contains_hyperlink,
             "indicator_text": self._indicator_text,
         }
+
 
 def main() -> None:
     """main for testing purposes"""

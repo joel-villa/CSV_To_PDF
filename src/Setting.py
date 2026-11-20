@@ -36,12 +36,14 @@ class Setting:
         self.__load_settings()
 
     def __str__(self):
-        return str({
-            "col_order": self._col_order,
-            "doc_title": self._doc_title,
-            "track_date": self._track_date,
-            "preamble": self._preamble,
-        })
+        return str(
+            {
+                "col_order": self._col_order,
+                "doc_title": self._doc_title,
+                "track_date": self._track_date,
+                "preamble": self._preamble,
+            }
+        )
 
     def __load_settings(self) -> None:
         """Load the settings from the settings path
@@ -70,8 +72,8 @@ class Setting:
 
     def __save_settings(self) -> None:
         """Save the settings to the settings path"""
-#        assert type(self._default_map.values) is ColumnSetting, f"type: {type(self._default_map.values)}"
-#        assert type(self._setting_map.values) is ColumnSetting, f"type: {type(self._setting_map.values)}"
+        #        assert type(self._default_map.values) is ColumnSetting, f"type: {type(self._default_map.values)}"
+        #        assert type(self._setting_map.values) is ColumnSetting, f"type: {type(self._setting_map.values)}"
 
         default_dict = {}
         setting_dict = {}
@@ -106,6 +108,7 @@ class Setting:
              read_only (bool): Can these settings be updated?
         """
         return self._read_only
+
     @property
     def col_order(self) -> list[int]:
         """A getter for the col_order
@@ -175,7 +178,7 @@ class Setting:
             new_val (bool): the new value for the property
         """
         self.__check_authorization()
-        #TODO: add markdown link formatting
+        # TODO: add markdown link formatting
         self._preamble = new_val
         self.__save_settings()
 
@@ -261,12 +264,13 @@ class Setting:
         """
         return self._setting_map[column]
 
+
 def test_setting(setting: Setting) -> None:
     """For testing purposes
 
     Args:
         setting (Setting): the setting to test
-	"""
+    """
     num_cols = 3
     default_setting = ColumnSetting()
 
@@ -283,10 +287,7 @@ def test_setting(setting: Setting) -> None:
     try:
         setting.update_setting(
             column=0,
-            setting=ColumnSetting(
-                read_only=True,
-                indicator_text="Just messing around"
-            ),
+            setting=ColumnSetting(read_only=True, indicator_text="Just messing around"),
         )
     except ValueError as e:
         print(e)
@@ -333,12 +334,14 @@ def test_setting(setting: Setting) -> None:
 
     print(f"Preamble: {setting.preamble}")
 
+
 def main() -> None:
     """main for testing purposes"""
     setting = Setting(read_only=False)
     test_setting(setting)
     immutable_setting = Setting()
     test_setting(immutable_setting)
+
 
 if __name__ == "__main__":
     """main for testing purposes"""
