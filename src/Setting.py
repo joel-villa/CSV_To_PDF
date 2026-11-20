@@ -181,6 +181,9 @@ class Setting:
             value (int): the new header_col
         """
         self.__check_authorization()
+        if value not in range(len(self.col_order)):
+            raise IndexError(f"Column {value} out of bounds, {len(self.col_order)} columns total")
+
         self._header_col = value
         self.__save_settings()
 
@@ -377,9 +380,17 @@ def test_setting(setting: Setting) -> None:
 
     print(f"header_col: {setting.header_col}")
 
+    try:
+        setting.header_col = 100
+    except IndexError as e:
+        print(e)
+    except ValueError:
+        possible_exceptions += 1
+        num_exceptions += 1
+
     possible_exceptions += 1
     try:
-        setting.header_col = 2
+        setting.header_col = 0
     except ValueError:
         num_exceptions += 1
 
