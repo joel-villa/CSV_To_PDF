@@ -11,6 +11,18 @@ class CLI:
     """The Command Line Interface"""
 
     _settings: Setting
+    _QUERY_LIST = (
+        "Paste the path to the .csv file:\n",
+        "csv please:\n",
+        "do the dang thang:\n",
+        "I hope you're having a good day:\n",
+        "Paste the path to the .csv file:\n",
+        "If you were a csv, would you dream of being a pdf:\n",
+        "Paste the path to the .csv file:\n",
+        "Paste the path to the .csv file:\n",
+        "Paste the path to the .csv file:\n",
+        "=^..^=:\n",
+    )
 
     def __init__(
         self,
@@ -45,14 +57,17 @@ class CLI:
         csv_path: Path
         pdf_path: Path
         str_path: str
+        i = 0
 
         while True:
-            str_path = input("Paste the path to the .csv file:")
+            str_path = input(self._QUERY_LIST[i])
             csv_path = Path(str_path)
             if (csv_path.exists()) and (csv_path.suffix == ".csv"):
                 break
 
-            print("Invalid path")
+            print(f"Invalid path: {str_path}\n")
+            i += 1
+            i %= len(self._QUERY_LIST)
 
         num_copies = 0
         num_chars = 0
