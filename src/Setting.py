@@ -123,6 +123,15 @@ class Setting:
         return self._header_col
 
     @property
+    def n_cols(self) -> int:
+        """A getter for n_cols
+
+        Returns:
+             n_cols (int): The number of columns
+        """
+        return len(self.col_order)
+
+    @property
     def col_order(self) -> list[int]:
         """A getter for the col_order
 
@@ -181,8 +190,8 @@ class Setting:
             value (int): the new header_col
         """
         self.__check_authorization()
-        if value not in range(len(self.col_order)):
-            raise IndexError(f"Column {value} out of bounds, {len(self.col_order)} columns total")
+        if value not in range(self.n_cols):
+            raise IndexError(f"Column {value} out of bounds, {self.n_cols} columns total")
 
         self._header_col = value
         self.__save_settings()
@@ -213,7 +222,7 @@ class Setting:
     def reset_col_order(self) -> None:
         """Reset the column ordering (just increasing)"""
         self.__check_authorization()
-        num_cols = len(self.col_order)
+        num_cols = self.n_cols
         self._col_order = list(range(num_cols))
         self.__save_settings()
 
@@ -270,8 +279,7 @@ class Setting:
                     f"Cannot insert column {column} unless parameter create_new is set to True"
                 )
 
-            num_cols = len(self.col_order)
-            self._col_order.append(num_cols)
+            self._col_order.append(self.n_cols)
             # Creating new column setting, spooky
             warn(
                 f"Column {column}, is not currently in settings, adding it is also setting as default."
