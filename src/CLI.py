@@ -13,6 +13,7 @@ class CLI:
     _settings: Setting
     _QUERY_LIST = (
         "Paste the path to the .csv file:\n",
+        "Paste the path to the .csv file:\n",
         "csv please:\n",
         "do the dang thang:\n",
         "I hope you're having a good day:\n",
