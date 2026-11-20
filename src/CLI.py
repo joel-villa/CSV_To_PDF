@@ -14,18 +14,15 @@ class CLI:
 
     def __init__(
         self,
-        settings: Setting,
     ) -> None:
         """Construct that CLI ASAP
 
         Args:
             settings (Settings): converter settings
         """
-        if settings.read_only:
-            raise ValueError("Setting needs to be writable for the CLI")
-        self._settings = settings
+        self._settings = Setting(read_only=False)
 
-    def run(self) -> Path:
+    def run(self) -> tuple[Path, Path]:
         """Do all that user interaction goodness
 
         Args:
@@ -33,18 +30,62 @@ class CLI:
 
         Returns:
              csv_path (Path): The path to the csv file
-        """
-        raise NotImplementedError
+             pdf_path (Path): The path to the pdf file
 
+        Resources:
+            - User CLI input:
+                https://stackoverflow.com/questions/70797/user-input-and-command-line-arguments
+            - Checking path validity:
+                https://www.geeksforgeeks.org/python/check-if-a-file-exists-in-python/
+            - Path suffixes & file creation:
+                https://docs.python.org/3/library/pathlib.html
+            - Python strings are immutable...
+                https://stackoverflow.com/questions/2165172/replacing-one-character-of-a-string-in-python
+        """
+        csv_path: Path
+        pdf_path: Path
+        str_path: str
+
+        while True:
+            str_path = input("Paste the path to the .csv file:")
+            csv_path = Path(str_path)
+            if (csv_path.exists()) and (csv_path.suffix == ".csv"):
+                break
+
+            print("Invalid path")
+
+        num_copies = 0
+        num_chars = 0
+
+        while True:
+            # Handle multiple copies
+            match num_copies:
+                case 0:
+                    str_path = f"{str_path[:-4]}.pdf"
+                case 1:
+                    str_path = f"{str_path[:-4]} ({num_copies}).pdf"
+                    num_chars = 1
+                case _:
+                    str_path = f"{str_path[:-(7 + num_chars)]} ({num_copies}).pdf"
+                    num_chars = len(str(num_copies))
+
+            pdf_path = Path(str_path)
+            if not pdf_path.exists():
+                break
+
+            num_copies += 1
+
+        pdf_path.touch()
+
+        return csv_path, pdf_path
 
 def main() -> None:
     """main for testing purposes"""
 
-    settings = Setting()
-    cli = CLI(settings)
-    path = cli.run
-    print(path)
-
+    cli = CLI()
+    for i in range(4):
+        path = cli.run
+        print(f"{i}: {path}")
 
 if __name__ == "__main__":
     """main for testing purposes
