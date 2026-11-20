@@ -1,1 +1,50 @@
-{}
+{
+    "col_order": [
+        0,
+        1,
+        2
+    ],
+    "default_map": {
+        "0": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "1": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "2": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        }
+    },
+    "doc_title": "A Terrible Tittle",
+    "preamble": "A terrifying preamble",
+    "setting_map": {
+        "0": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "1": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "2": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        }
+    },
+    "track_date": true
+}
