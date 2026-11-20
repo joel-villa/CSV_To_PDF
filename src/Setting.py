@@ -11,12 +11,13 @@ class Setting:
     """The settings object"""
 
     _read_only: bool
+    _track_date: bool
+    _header_col: int
+    _doc_title: str
+    _preamble: str
+    _col_order: list[int]
     _setting_map: dict[int, ColumnSetting]
     _default_map: dict[int, ColumnSetting]
-    _col_order: list[int]
-    _doc_title: str
-    _track_date: bool
-    _preamble: str
     _PATH: Path = Path("settings.json")
 
     def __init__(self, read_only: bool = True) -> None:
@@ -26,13 +27,13 @@ class Setting:
             read_only (bool): Can these settings be updated?
         """
         self._read_only = read_only
+        self._track_date = False
+        self._header_col = 0
+        self._doc_title = ""
+        self._preamble = ""
+        self._col_order = []
         self._setting_map = {}
         self._default_map = {}
-        self._doc_title = ""
-        self._col_order = []
-        self._doc_title = ""
-        self._track_date = False
-        self._preamble = ""
         self.__load_settings()
 
     def __str__(self):
@@ -40,6 +41,7 @@ class Setting:
             {
                 "col_order": self._col_order,
                 "doc_title": self._doc_title,
+                "header_col": self._header_col,
                 "track_date": self._track_date,
                 "preamble": self._preamble,
             }
@@ -67,6 +69,7 @@ class Setting:
 
             self._col_order = json_dict["col_order"]
             self._doc_title = json_dict["doc_title"]
+            self._header_col = json_dict["header_col"]
             self._preamble = json_dict["preamble"]
             self._track_date = json_dict["track_date"]
 
@@ -87,6 +90,7 @@ class Setting:
             "col_order": self._col_order,
             "default_map": default_dict,
             "doc_title": self._doc_title,
+            "header_col": self._header_col,
             "preamble": self._preamble,
             "setting_map": setting_dict,
             "track_date": self._track_date,
@@ -108,6 +112,15 @@ class Setting:
              read_only (bool): Can these settings be updated?
         """
         return self._read_only
+
+    @property
+    def header_col(self) -> int:
+        """A getter for header_col
+
+        Returns:
+             header_col (int): The column who will be the header
+        """
+        return self._header_col
 
     @property
     def col_order(self) -> list[int]:
@@ -157,6 +170,18 @@ class Setting:
         """
         self.__check_authorization()
         self._doc_title = text
+        self.__save_settings()
+
+
+    @header_col.setter
+    def header_col(self, value: int) -> None:
+        """A setter for the header_col
+
+        Args:
+            value (int): the new header_col
+        """
+        self.__check_authorization()
+        self._header_col = value
         self.__save_settings()
 
     @track_date.setter
