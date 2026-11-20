@@ -84,7 +84,7 @@ def main() -> None:
 
     cli = CLI()
     for i in range(4):
-        path = cli.run
+        path = cli.run()
         print(f"{i}: {path}")
 
 if __name__ == "__main__":
