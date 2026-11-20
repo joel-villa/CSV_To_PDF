@@ -7,7 +7,7 @@ from warnings import warn
 from src.ColumnSetting import ColumnSetting
 
 
-class Settings:
+class Setting:
     """The settings object"""
 
     _read_only: bool
@@ -95,6 +95,14 @@ class Settings:
             raise ValueError("This Column Setting is read only")
 
     @property
+    def read_only(self) -> bool:
+        """A getter for read_only
+
+        Returns:
+             read_only (bool): Can these settings be updated?
+        """
+        return self._read_only
+    @property
     def col_order(self) -> list[int]:
         """A getter for the col_order
 
@@ -163,6 +171,7 @@ class Settings:
             new_val (bool): the new value for the property
         """
         self.__check_authorization()
+        #TODO: add markdown link formatting
         self._external_link = new_val
         self.__save_settings()
 
