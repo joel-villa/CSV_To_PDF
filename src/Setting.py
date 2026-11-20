@@ -43,29 +43,6 @@ class Setting:
             "preamble": self._preamble,
         })
 
-    def __to_dict(self) -> dict:
-        """A dictionary representation of this Setting
-
-        Returns:
-            setting_dict (dict): Dictionary representation of this setting
-        """
-        default_dict = {}
-        setting_dict = {}
-
-        for key, value in self._default_map.items():
-            default_dict[key] = value.to_dict()
-        for key, value in self._setting_map.items():
-            setting_dict[key] = value.to_dict()
-
-        return {
-            "col_order": self._col_order,
-            "default_map": default_dict,
-            "doc_title": self._doc_title,
-            "preamble": self._preamble,
-            "setting_map": setting_dict,
-            "track_date": self._track_date,
-        }
-
     def __load_settings(self) -> None:
         """Load the settings from the settings path
 
@@ -76,27 +53,45 @@ class Setting:
                 https://www.w3schools.com/python/python_dictionaries_loop.asp
         """
         with open(self._PATH) as f:
-            setting_dict = json.load(f)
+            json_dict = json.load(f)
 
-            default_map = setting_dict["default_map"]
-            setting_map = setting_dict["setting_map"]
+            default_dict = json_dict["default_map"]
+            setting_dict = json_dict["setting_map"]
 
-            for key, value in default_map.items():
+            for key, value in default_dict.items():
+                self._default_map[int(key)] = ColumnSetting(**value)
+            for key, value in setting_dict.items():
                 self._setting_map[int(key)] = ColumnSetting(**value)
-            for key, value in setting_map.items():
-                self._setting_map[int(key)] = ColumnSetting(**value)
 
-            self._col_order = setting_dict["col_order"]
-            self._default_map = default_map
-            self._doc_title = setting_dict["doc_title"]
-            self._preamble = setting_dict["preamble"]
-            self._setting_map = setting_map
-            self._track_date = setting_dict["track_date"]
+            self._col_order = json_dict["col_order"]
+            self._doc_title = json_dict["doc_title"]
+            self._preamble = json_dict["preamble"]
+            self._track_date = json_dict["track_date"]
 
     def __save_settings(self) -> None:
         """Save the settings to the settings path"""
+#        assert type(self._default_map.values) is ColumnSetting, f"type: {type(self._default_map.values)}"
+#        assert type(self._setting_map.values) is ColumnSetting, f"type: {type(self._setting_map.values)}"
+
+        default_dict = {}
+        setting_dict = {}
+
+        for key, value in self._default_map.items():
+            default_dict[key] = value.to_dict()
+        for key, value in self._setting_map.items():
+            setting_dict[key] = value.to_dict()
+
+        json_dict = {
+            "col_order": self._col_order,
+            "default_map": default_dict,
+            "doc_title": self._doc_title,
+            "preamble": self._preamble,
+            "setting_map": setting_dict,
+            "track_date": self._track_date,
+        }
+
         with open(self._PATH, "w") as json_file:
-            json.dump(self.__to_dict(), json_file, indent=4)
+            json.dump(json_dict, json_file, indent=4)
 
     def __check_authorization(self) -> None:
         """Check that this column setting is allowed to be written to"""
