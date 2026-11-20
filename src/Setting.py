@@ -16,7 +16,7 @@ class Setting:
     _col_order: list[int]
     _doc_title: str
     _track_date: bool
-    _external_link: str
+    _preamble: str
     _PATH: Path = Path("settings.json")
 
     def __init__(self, read_only: bool = True) -> None:
@@ -32,8 +32,39 @@ class Setting:
         self._col_order = []
         self._doc_title = ""
         self._track_date = False
-        self._external_link = ""
+        self._preamble = ""
         self.__load_settings()
+
+    def __str__(self):
+        return str({
+            "col_order": self._col_order,
+            "doc_title": self._doc_title,
+            "track_date": self._track_date,
+            "preamble": self._preamble,
+        })
+
+    def __to_dict(self) -> dict:
+        """A dictionary representation of this Setting
+
+        Returns:
+            setting_dict (dict): Dictionary representation of this setting
+        """
+        default_dict = {}
+        setting_dict = {}
+
+        for key, value in self._default_map.items():
+            default_dict[key] = value.to_dict()
+        for key, value in self._setting_map.items():
+            setting_dict[key] = value.to_dict()
+
+        return {
+            "col_order": self._col_order,
+            "default_map": default_dict,
+            "doc_title": self._doc_title,
+            "preamble": self._preamble,
+            "setting_map": setting_dict,
+            "track_date": self._track_date,
+        }
 
     def __load_settings(self) -> None:
         """Load the settings from the settings path
@@ -44,55 +75,33 @@ class Setting:
             - Looping through a dictionary
                 https://www.w3schools.com/python/python_dictionaries_loop.asp
         """
-        raise NotImplementedError
         with open(self._PATH) as f:
             setting_dict = json.load(f)
 
-            # TODO: finish settings reading + writing implementation
-            self._col_order = setting_dict["col_order"]
-            self._doc_title = setting_dict["doc_title"]
-
-            #            self._title_font = Font(**setting_dict['title_font'])
-
-            setting_map = setting_dict["setting_map"]
             default_map = setting_dict["default_map"]
+            setting_map = setting_dict["setting_map"]
 
-            for json_map, self_map in zip(
-                [setting_map, default_map], [self._setting_map, self._default_map]
-            ):
-                for key, value in json_map.items():
-                    #                    font = Font(**value['font'])
-                    self_map[int(key)] = ColumnSetting(
-                        #                        font=font,
-                        is_indicator=value["is_indicator"],
-                        additional_text=value["additional_text"],
-                    )
+            for key, value in default_map.items():
+                self._setting_map[int(key)] = ColumnSetting(**value)
+            for key, value in setting_map.items():
+                self._setting_map[int(key)] = ColumnSetting(**value)
+
+            self._col_order = setting_dict["col_order"]
+            self._default_map = default_map
+            self._doc_title = setting_dict["doc_title"]
+            self._preamble = setting_dict["preamble"]
+            self._setting_map = setting_map
+            self._track_date = setting_dict["track_date"]
 
     def __save_settings(self) -> None:
         """Save the settings to the settings path"""
-        raise NotImplementedError
-        setting_map = {}
-        default_map = {}
-        for json_map, self_map in zip(
-            [setting_map, default_map], [self._setting_map, self._default_map]
-        ):
-            for key, value in self_map.items():
-                json_map[key] = value.to_dict()
-
-        json_dict = {}
-        json_dict["col_order"] = self._col_order
-        json_dict["doc_title"] = self._doc_title
-        json_dict["title_font"] = self.title_font.to_dict()
-        json_dict["setting_map"] = setting_map
-        json_dict["default_map"] = default_map
-
         with open(self._PATH, "w") as json_file:
-            json.dump(json_dict, json_file, indent=4)
+            json.dump(self.__to_dict(), json_file, indent=4)
 
     def __check_authorization(self) -> None:
         """Check that this column setting is allowed to be written to"""
         if self._read_only:
-            raise ValueError("This Column Setting is read only")
+            raise ValueError("This Setting is read only")
 
     @property
     def read_only(self) -> bool:
@@ -130,13 +139,13 @@ class Setting:
         return self._track_date
 
     @property
-    def external_link(self) -> str:
+    def preamble(self) -> str:
         """A getter for external_link
 
         Returns:
              track_date (bool): The link to the external website
         """
-        return self._external_link
+        return self._preamble
 
     @doc_title.setter
     def doc_title(self, text: str) -> None:
@@ -163,8 +172,8 @@ class Setting:
         self._track_date = new_val
         self.__save_settings()
 
-    @external_link.setter
-    def external_link(self, new_val: str) -> None:
+    @preamble.setter
+    def preamble(self, new_val: str) -> None:
         """A setter for external_link
 
         Args:
@@ -172,7 +181,7 @@ class Setting:
         """
         self.__check_authorization()
         #TODO: add markdown link formatting
-        self._external_link = new_val
+        self._preamble = new_val
         self.__save_settings()
 
     def reset_col_order(self) -> None:
@@ -256,3 +265,86 @@ class Setting:
              col_setting (ColumnSetting): The column settings for the column
         """
         return self._setting_map[column]
+
+def test_setting(setting: Setting) -> None:
+    """For testing purposes
+
+    Args:
+        setting (Setting): the setting to test
+	"""
+    num_cols = 3
+    default_setting = ColumnSetting()
+
+    try:
+        for i in range(num_cols):
+            setting.update_setting(column=i, setting=default_setting, create_new=True)
+    except ValueError as e:
+        print(e)
+
+    for i in range(num_cols):
+        col_setting = setting.get_setting(i)
+        print(f"col_setting {i}: {col_setting}")
+
+    try:
+        setting.update_setting(
+            column=0,
+            setting=ColumnSetting(
+                read_only=True,
+                indicator_text="Just messing around"
+            ),
+        )
+    except ValueError as e:
+        print(e)
+
+    print(f"col_setting 0: {setting.get_setting(0)}")
+
+    try:
+        setting.set_to_default(0)
+    except ValueError as e:
+        print(e)
+
+    print(f"col_setting 0: {setting.get_setting(0)}")
+
+    print(f"col_order: {setting.col_order}")
+
+    try:
+        setting.swap_cols(
+            col_one=0,
+            col_two=1,
+        )
+    except ValueError as e:
+        print(e)
+
+    print(f"col_order: {setting.col_order}")
+
+    try:
+        setting.reset_col_order()
+    except ValueError as e:
+        print(e)
+
+    print(f"col_order: {setting.col_order}")
+
+    try:
+        setting.doc_title = "A Terrible Tittle"
+    except ValueError as e:
+        print(e)
+
+    print(f"Title: {setting.doc_title}")
+
+    try:
+        setting.preamble = "A terrifying preamble"
+    except ValueError as e:
+        print(e)
+
+    print(f"Preamble: {setting.preamble}")
+
+def main() -> None:
+    """main for testing purposes"""
+    setting = Setting(read_only=False)
+    test_setting(setting)
+    immutable_setting = Setting()
+    test_setting(immutable_setting)
+
+if __name__ == "__main__":
+    """main for testing purposes"""
+    main()
