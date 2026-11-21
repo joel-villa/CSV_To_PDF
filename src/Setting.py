@@ -167,7 +167,6 @@ class Setting:
         self._doc_title = text
         self.__save_settings()
 
-
     @track_date.setter
     def track_date(self, new_val: bool) -> None:
         """A setter for track_date

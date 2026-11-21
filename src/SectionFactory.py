@@ -72,7 +72,7 @@ class SectionFactory:
                 https://www.markdownguide.org/basic-syntax/
         """
         if self._field_names is None:
-            self._field_names = [str(x) for x in  range(self._setting.n_cols)]
+            self._field_names = [str(x) for x in range(self._setting.n_cols)]
 
         row_idxs = np.argsort(np.array(self._setting.col_order))
         section = ""
@@ -87,14 +87,13 @@ class SectionFactory:
             if field_value == "":
                 continue
 
-            if field_value[0] == '\"' and field_value[-1] == "\"":
+            if field_value[0] == '"' and field_value[-1] == '"':
                 field_value = field_value[1:-1]
                 # Cleaning data
 
             if field_setting.contains_hyperlink:
                 # Field value is a hyper link! make it so
                 field_value = f"[{field_value}]({field_value})"
-
 
             if is_header:
                 # Header value is a special case: no field_name, and need ##
@@ -126,6 +125,7 @@ class SectionFactory:
 
         return section
 
+
 def main() -> None:
     """main for testing purposes"""
     section_factory = SectionFactory()
@@ -133,6 +133,7 @@ def main() -> None:
     print(section_factory.to_section(["Bob", "29", "purple"]))
     print(section_factory.to_section(["Alice", "31", "cyan"]))
     print(section_factory.to_section(["Sick Fuck", "30", "green"]))
+
 
 if __name__ == "__main__":
     """main for testing purposes"""

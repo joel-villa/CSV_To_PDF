@@ -2,9 +2,9 @@
 
 import csv
 from datetime import datetime
+from pathlib import Path
 
 from markdown_pdf import MarkdownPdf, Section
-from pathlib import Path
 
 from src.SectionFactory import SectionFactory
 from src.Setting import Setting
@@ -12,6 +12,7 @@ from src.Setting import Setting
 
 class Converter:
     """For conversion needs"""
+
     _settings: Setting
     _section_factory: SectionFactory
 
@@ -56,13 +57,14 @@ class Converter:
 
         # Reading the csv, using the SectionFactory to create the strings to write
         with open(csv_path) as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+            spamreader = csv.reader(csvfile, delimiter=",", quotechar="|")
             for row in spamreader:
                 next_section = Section(self._section_factory.to_section(row))
                 md_pdf.add_section(next_section)
 
         md_pdf.meta["title"] = self._settings.doc_title
         md_pdf.save(pdf_path)
+
 
 def main() -> None:
     """main for testing purposes"""

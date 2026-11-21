@@ -78,7 +78,7 @@ class CLI:
                     str_path = f"{str_path[:-4]} ({num_copies}).pdf"
                     num_chars = 1
                 case _:
-                    str_path = f"{str_path[:-(7 + num_chars)]} ({num_copies}).pdf"
+                    str_path = f"{str_path[: -(7 + num_chars)]} ({num_copies}).pdf"
                     num_chars = len(str(num_copies))
 
             pdf_path = Path(str_path)
@@ -91,6 +91,7 @@ class CLI:
 
         return csv_path, pdf_path
 
+
 def main() -> None:
     """main for testing purposes"""
 
@@ -98,6 +99,7 @@ def main() -> None:
     for i in range(4):
         path = cli.run()
         print(f"{i}: {path}")
+
 
 if __name__ == "__main__":
     """main for testing purposes
