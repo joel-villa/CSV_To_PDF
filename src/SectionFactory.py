@@ -68,6 +68,8 @@ class SectionFactory:
         Resources:
             - Indices that would sort an array:
                 https://numpy.org/doc/stable/reference/generated/numpy.argsort.html
+            - Markdown syntax:
+                https://www.markdownguide.org/basic-syntax/
         """
         if self._field_names is None:
             self._field_names = [str(x) for x in  range(self._setting.n_cols)]
@@ -81,6 +83,13 @@ class SectionFactory:
             field_setting = self._setting.get_setting(i)
             is_header = self._setting.col_order[i] == 0
             field_str = ""
+
+            if field_value == "":
+                continue
+
+            if field_value[0] == '\"' and field_value[-1] == "\"":
+                field_value = field_value[1:-1]
+                # Cleaning data
 
             if field_setting.contains_hyperlink:
                 # Field value is a hyper link! make it so
