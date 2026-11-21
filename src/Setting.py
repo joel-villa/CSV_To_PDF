@@ -149,7 +149,7 @@ class Setting:
         """A getter for external_link
 
         Returns:
-             track_date (bool): The link to the external website
+             preamble (str): Some extra functionality
         """
         return self._preamble
 
