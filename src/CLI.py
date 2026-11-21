@@ -28,11 +28,7 @@ class CLI:
     def __init__(
         self,
     ) -> None:
-        """Construct that CLI ASAP
-
-        Args:
-            settings (Settings): converter settings
-        """
+        """Construct that CLI ASAP"""
         self._settings = Setting(read_only=False)
 
     def run(self) -> tuple[Path, Path]:
