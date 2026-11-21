@@ -41,6 +41,8 @@ class Converter:
                 https://stackoverflow.com/questions/28189442/datetime-current-year-and-month-in-python
             - Reading a csv:
                 https://docs.python.org/3/library/csv.html
+            - Reading a file:
+                https://www.geeksforgeeks.org/python/read-file-as-string-in-python/
         """
         if pdf_path is None:
             raise NotImplementedError
@@ -63,7 +65,14 @@ class Converter:
                     continue
                 section = f"{section}{self._section_factory.to_section(row)}"
 
-        md_pdf.add_section(Section(section))
+        file_path = 'style.css'
+        with open(file_path, 'r') as file:
+            css_settings = file.read()
+
+        md_pdf.add_section(
+            Section(section),
+            user_css=css_settings,
+        )
         md_pdf.meta["title"] = self._settings.doc_title
         md_pdf.save(pdf_path)
 
