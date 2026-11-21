@@ -48,20 +48,19 @@ class Converter:
         md_pdf = MarkdownPdf()
 
         # Initial section
-        fst_section = f"# {self._settings.doc_title}\n"
+        section = f"# {self._settings.doc_title}\n"
         if self._settings.track_date:
-            fst_section = f"Last updated {datetime.now().month} {datetime.now().year}\n"
+            section = f"{section}Last updated {datetime.now().month} {datetime.now().year}\n"
         if self._settings.preamble != "":
-            fst_section = f"{fst_section}{self._settings.preamble}\n"
-        md_pdf.add_section(Section(fst_section))
+            section = f"{section}{self._settings.preamble}\n"
 
         # Reading the csv, using the SectionFactory to create the strings to write
         with open(csv_path) as csvfile:
             spamreader = csv.reader(csvfile, delimiter=",", quotechar="|")
             for row in spamreader:
-                next_section = Section(self._section_factory.to_section(row))
-                md_pdf.add_section(next_section)
+                section = f"{section}{self._section_factory.to_section(row)}"
 
+        md_pdf.add_section(Section(section))
         md_pdf.meta["title"] = self._settings.doc_title
         md_pdf.save(pdf_path)
 
