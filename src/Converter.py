@@ -56,8 +56,11 @@ class Converter:
 
         # Reading the csv, using the SectionFactory to create the strings to write
         with open(csv_path) as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=",", quotechar="|")
-            for row in spamreader:
+            spamreader = csv.reader(csvfile, delimiter=",", quotechar="\"")
+            for i, row in enumerate(spamreader):
+                if i == 0:
+                    self._section_factory.field_names = row
+                    continue
                 section = f"{section}{self._section_factory.to_section(row)}"
 
         md_pdf.add_section(Section(section))
