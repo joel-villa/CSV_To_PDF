@@ -11,6 +11,7 @@ class ColumnSetting:
     _is_italic: bool
     _contains_hyperlink: bool
     _indicator_text: str | None
+    #TODO: markdown header?
 
     def __init__(
         self,
