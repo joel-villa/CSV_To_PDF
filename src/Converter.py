@@ -70,10 +70,10 @@ def main() -> None:
     """main for testing purposes"""
 
     converter = Converter()
-    pdf = Path("~/Projects/Personal/CSV_To_PDF/test_out.pdf")
+    pdf = Path("test_out.pdf")
     pdf.touch()
     converter.convert(
-        csv_path=Path("~/Projects/Personal/CSV_To_PDF/resources.csv"),
+        csv_path=Path("resources.csv"),
         pdf_path=pdf,
     )
 
