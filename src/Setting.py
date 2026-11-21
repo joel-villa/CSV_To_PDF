@@ -278,7 +278,7 @@ def test_setting(setting: Setting) -> None:
     Args:
         setting (Setting): the setting to test
     """
-    num_cols = 3
+    num_cols = 7
     default_setting = ColumnSetting()
     num_exceptions = 0
     possible_exceptions = 0

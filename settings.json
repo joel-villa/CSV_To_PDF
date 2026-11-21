@@ -2,7 +2,11 @@
     "col_order": [
         0,
         1,
-        2
+        2,
+        3,
+        4,
+        5,
+        6
     ],
     "default_map": {
         "0": {
@@ -18,6 +22,30 @@
             "indicator_text": null
         },
         "2": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "3": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "4": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "5": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "6": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
@@ -40,6 +68,30 @@
             "indicator_text": null
         },
         "2": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "3": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "4": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "5": {
+            "is_bold": false,
+            "is_italic": false,
+            "contains_hyperlink": false,
+            "indicator_text": null
+        },
+        "6": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
