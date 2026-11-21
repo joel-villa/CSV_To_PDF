@@ -1,5 +1,7 @@
 """Makes Sections based on some Settings"""
 
+import numpy as np
+
 from src.Setting import Setting
 
 
@@ -62,11 +64,58 @@ class SectionFactory:
 
         Returns:
              section (str): The markdownified string representation of the row
+
+        Resources:
+            - Indices that would sort an array:
+                https://numpy.org/doc/stable/reference/generated/numpy.argsort.html
         """
         if self._field_names is None:
-            # TODO: handle Null field_names
-            raise NotImplementedError
-        raise NotImplementedError
+            self._field_names = [str(x) for x in  range(self._setting.n_cols)]
+
+        row_idxs = np.argsort(np.array(self._setting.col_order))
+        section = ""
+
+        for i in row_idxs:
+            field_name = self._field_names[i]
+            field_value = field_values[i]
+            field_setting = self._setting.get_setting(i)
+            is_header = self._setting.col_order[i] == 0
+            field_str = ""
+
+            if field_setting.contains_hyperlink:
+                # Field value is a hyper link! make it so
+                field_value = f"[{field_value}]({field_value})"
+
+
+            if is_header:
+                # Header value is a special case: no field_name, and need ##
+                field_str = f"{field_value}"
+            else:
+                field_str = f"{field_name}: {field_value}"
+
+            if field_setting.indicator_text is not None:
+                if field_setting.contains_hyperlink:
+                    field_str = f"{field_value}"
+                else:
+                    if field_setting.contains_hyperlink:
+                        field_str = f"[{field_setting.indicator_text}]({field_setting.indicator_text})"
+                    field_str = f"{field_setting.indicator_text}"
+
+            if field_setting.is_bold and not field_setting.is_italic:
+                field_str = f"**{field_str}**"
+
+            if field_setting.is_italic and not field_setting.is_bold:
+                field_str = f"*{field_str}*"
+
+            if field_setting.is_italic and field_setting.is_bold:
+                field_str = f"***{field_str}***"
+
+            if is_header:
+                field_str = f"## {field_str}"
+
+            section = f"{section}{field_str}\n"
+
+        return section
 
 def main() -> None:
     """main for testing purposes"""
