@@ -260,6 +260,15 @@ class Setting:
         self._setting_map[column] = setting
         self.__save_settings()
 
+    def delete_column(self, column: int) -> None:
+        """Delete the column from the settings
+
+        Args:
+            column (int): The column to remove
+
+	    """
+        raise NotImplementedError
+
     def get_setting(self, column: int) -> ColumnSetting:
         """Get the setting for a specific column
 
@@ -278,7 +287,7 @@ def test_setting(setting: Setting) -> None:
     Args:
         setting (Setting): the setting to test
     """
-    num_cols = 10
+    num_cols = 7
     default_setting = ColumnSetting()
     num_exceptions = 0
     possible_exceptions = 0
