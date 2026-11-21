@@ -71,9 +71,6 @@ class SectionFactory:
             - Markdown syntax:
                 https://www.markdownguide.org/basic-syntax/
         """
-        #TODO: have default column to handle this?
-        assert len(field_values) <= self._setting.n_cols, f"provided columns = {len(field_values)} > {self._setting.n_cols} = setting columns"
-
         if self._field_names is None:
             self._field_names = [str(x) for x in range(self._setting.n_cols)]
 
@@ -81,6 +78,9 @@ class SectionFactory:
         section = ""
 
         for i in row_idxs:
+            if i >= len(field_values):
+                #TODO actaully handle this (use default column setting)
+                break
             field_name = self._field_names[i]
             field_value = field_values[i]
             field_setting = self._setting.get_setting(i)
