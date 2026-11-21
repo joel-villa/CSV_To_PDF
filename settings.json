@@ -1,12 +1,12 @@
 {
     "col_order": [
         0,
-        1,
         2,
         3,
         4,
         5,
-        6
+        6,
+        1
     ],
     "default_map": {
         "0": {
@@ -46,14 +46,14 @@
             "indicator_text": null
         },
         "6": {
-            "is_bold": false,
+            "is_bold": true,
             "is_italic": false,
             "contains_hyperlink": false,
-            "indicator_text": null
+            "indicator_text": "Faith-based resource center"
         }
     },
-    "doc_title": "A Terrible Tittle",
-    "preamble": "A terrifying preamble",
+    "doc_title": "Alphabetical List of Resources in Albuquerque",
+    "preamble": "most updated version available at abqresources.org)",
     "setting_map": {
         "0": {
             "is_bold": false,
@@ -92,10 +92,10 @@
             "indicator_text": null
         },
         "6": {
-            "is_bold": false,
+            "is_bold": true,
             "is_italic": false,
             "contains_hyperlink": false,
-            "indicator_text": null
+            "indicator_text": "Faith-based resource center"
         }
     },
     "track_date": true
