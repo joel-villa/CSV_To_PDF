@@ -10,6 +10,7 @@ class ColumnSetting:
     _is_bold: bool
     _is_italic: bool
     _contains_hyperlink: bool
+    _header_number: int
     _indicator_text: str | None
     # TODO: markdown header?
 
@@ -18,6 +19,7 @@ class ColumnSetting:
         is_bold: bool = False,
         is_italic: bool = False,
         contains_hyperlink: bool = False,
+        header_number: int = 0,
         indicator_text: str | None = None,
         read_only: bool = True,
     ) -> None:
@@ -27,6 +29,7 @@ class ColumnSetting:
             is_bold (bool): Should this column be bold?
             is_italic (bool): Should this coolumn be italicized
             contains_hyperlink (bool): Does this column contain a hyper link?
+            header_number (int): The header number of this column
             indicator_text (str | None): Is this column an indicator one? If
             so it has some default text
             read_only (bool): Is this Column Setting not to be updated?
@@ -35,6 +38,7 @@ class ColumnSetting:
         self._is_bold = is_bold
         self._is_italic = is_italic
         self._contains_hyperlink = contains_hyperlink
+        self._header_number = header_number
         self._indicator_text = indicator_text
 
     def __check_authorization(self) -> None:
@@ -85,6 +89,15 @@ class ColumnSetting:
         return self._contains_hyperlink
 
     @property
+    def header_number(self) -> int:
+        """A getter for header_number
+
+        Returns:
+            header_number (int): The header number of this column
+        """
+        return self._header_number
+
+    @property
     def indicator_text(self) -> str | None:
         """A getter for indicator_text
 
@@ -124,6 +137,16 @@ class ColumnSetting:
         self.__check_authorization()
         self._contains_hyperlink = new_val
 
+    @header_number.setter
+    def header_number(self, new_val: int) -> None:
+        """A setter for header_number
+
+        Args:
+            new_val (bool): The new value for the property
+        """
+        self.__check_authorization()
+        self._header_number = new_val
+
     @indicator_text.setter
     def indicator_text(self, new_val: str | None) -> None:
         """A setter for indicator_text
@@ -147,6 +170,7 @@ class ColumnSetting:
             "is_bold": self._is_bold,
             "is_italic": self._is_italic,
             "contains_hyperlink": self._contains_hyperlink,
+            "header_number": self._header_number,
             "indicator_text": self._indicator_text,
         }
 
