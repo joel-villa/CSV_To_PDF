@@ -1,0 +1,2 @@
+markdown_pdf==1.14
+numpy==2.5.5
