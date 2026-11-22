@@ -13,42 +13,49 @@
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 3,
             "indicator_text": null
         },
         "1": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "2": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "3": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "4": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "5": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "6": {
             "is_bold": true,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": "Faith-based resource center"
         }
     },
@@ -59,36 +66,42 @@
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 3,
             "indicator_text": null
         },
         "1": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "2": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "3": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "4": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "5": {
             "is_bold": false,
             "is_italic": false,
             "contains_hyperlink": false,
+            "header_number": 0,
             "indicator_text": null
         },
         "6": {
