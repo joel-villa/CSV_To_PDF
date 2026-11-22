@@ -70,6 +70,8 @@ class SectionFactory:
                 https://numpy.org/doc/stable/reference/generated/numpy.argsort.html
             - Markdown syntax:
                 https://www.markdownguide.org/basic-syntax/
+            - Duplicating a string's text:
+                https://www.geeksforgeeks.org/python/create-multiple-copies-of-a-string-in-python-by-using-multiplication-operator/
         """
         if self._field_names is None:
             self._field_names = [str(x) for x in range(self._setting.n_cols)]
@@ -121,10 +123,11 @@ class SectionFactory:
             if field_setting.is_italic and field_setting.is_bold:
                 field_str = f"***{field_str}***"
 
-            if is_header:
-                field_str = f"## {field_str}"
+            header_str = "#" * field_setting.header_number
 
-            section = f"{section}{field_str}\n\n"
+            field_str = f"{header_str} {field_str}"
+
+            section = f"{section}{field_str}  \n"
 
         return section
 
