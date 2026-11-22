@@ -6,7 +6,12 @@ from src.Converter import Converter
 
 
 def main() -> None:
-    """main for testing purposes"""
+    """Runnnable main
+
+    Resources:
+        - Path to string:
+            https://stackoverflow.com/questions/21518476/python-path-as-a-string
+    """
 
     cli = CLI()
     csv_path, pdf_path = cli.run()
@@ -16,12 +21,8 @@ def main() -> None:
         pdf_path=pdf_path,
     )
 
+    print(f"A pdf file was successfully created at \"{pdf_path}\"")
 
 if __name__ == "__main__":
-    """main for testing purposes
-
-    Resources:
-        - Main:
-            https://docs.python.org/3/library/__main__.html
-    """
+    """Runnnable main"""
     main()
