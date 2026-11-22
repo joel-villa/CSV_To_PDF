@@ -21,7 +21,8 @@ def main() -> None:
         pdf_path=pdf_path,
     )
 
-    print(f"A pdf file was successfully created at \"{pdf_path}\"")
+    print(f'A pdf file was successfully created at "{pdf_path}"')
+
 
 if __name__ == "__main__":
     """Runnnable main"""

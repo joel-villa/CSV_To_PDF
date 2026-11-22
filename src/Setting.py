@@ -266,7 +266,7 @@ class Setting:
         Args:
             column (int): The column to remove
 
-	    """
+        """
         raise NotImplementedError
 
     def get_setting(self, column: int) -> ColumnSetting:

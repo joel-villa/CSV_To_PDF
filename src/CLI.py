@@ -62,7 +62,7 @@ class CLI:
             if (csv_path.exists()) and (csv_path.suffix == ".csv"):
                 break
 
-            print(f"Invalid path: \"{str_path}\"\n")
+            print(f'Invalid path: "{str_path}"\n')
             i += 1
             i %= len(self._QUERY_LIST)
 

@@ -52,21 +52,23 @@ class Converter:
         # Initial section
         section = f"# {self._settings.doc_title}\n"
         if self._settings.track_date:
-            section = f"{section}Last updated {datetime.now().month} {datetime.now().year}\n"
+            section = (
+                f"{section}Last updated {datetime.now().month} {datetime.now().year}\n"
+            )
         if self._settings.preamble != "":
             section = f"{section}{self._settings.preamble}\n"
 
         # Reading the csv, using the SectionFactory to create the strings to write
         with open(csv_path) as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=",", quotechar="\"")
+            spamreader = csv.reader(csvfile, delimiter=",", quotechar='"')
             for i, row in enumerate(spamreader):
                 if i == 0:
                     self._section_factory.field_names = row
                     continue
                 section = f"{section}{self._section_factory.to_section(row)}"
 
-        file_path = 'style.css'
-        with open(file_path, 'r') as file:
+        file_path = "style.css"
+        with open(file_path, "r") as file:
             css_settings = file.read()
 
         md_pdf.add_section(

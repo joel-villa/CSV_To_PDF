@@ -78,9 +78,9 @@ class SectionFactory:
         section = ""
 
         for i in row_idxs:
-#            if i >= len(field_values):
-#                #TODO actaully handle this (use default column setting)
-#                break
+            #            if i >= len(field_values):
+            #                #TODO actaully handle this (use default column setting)
+            #                break
             field_name = self._field_names[i]
             field_value = field_values[i]
             field_setting = self._setting.get_setting(i)
