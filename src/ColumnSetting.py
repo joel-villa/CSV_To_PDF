@@ -11,12 +11,14 @@ class ColumnSetting:
     _is_italic: bool
     _contains_hyperlink: bool
     _header_number: int
+    _col_number: int
     _indicator_text: str | None
     _name: str
 
     def __init__(
         self,
         name: str,
+        col_number: int,
         is_bold: bool = False,
         is_italic: bool = False,
         contains_hyperlink: bool = False,
@@ -28,6 +30,7 @@ class ColumnSetting:
 
         Args:
             name (str): The name of this column
+            col_number (int): The column number
             is_bold (bool): Should this column be bold?
             is_italic (bool): Should this coolumn be italicized
             contains_hyperlink (bool): Does this column contain a hyper link?
@@ -41,6 +44,7 @@ class ColumnSetting:
         self._is_italic = is_italic
         self._contains_hyperlink = contains_hyperlink
         self._header_number = header_number
+        self._col_number = col_number
         self._indicator_text = indicator_text
         self._name = name
 
@@ -63,6 +67,24 @@ class ColumnSetting:
                 https://stackoverflow.com/questions/16768302/does-python-have-a-tostring-equivalent-and-can-i-convert-a-class-to-string
         """
         return str(self.to_dict())
+
+
+    def __lt__(self, other) -> bool:
+        """Override the less than operator
+
+        Args:
+            other (ColumnSetting): The other ColumnSetting to compare to
+
+        Returns:
+            less_than (bool): Is this less than that?
+
+        Resources:
+            - Overload less than:
+                https://stackoverflow.com/questions/43690222/overloading-less-than-in-python
+            - Making a class sortable:
+                https://stackoverflow.com/questions/7152497/making-a-python-user-defined-class-sortable-hashable
+        """
+        return self.header_number > other.header_number or (self.indicator_text is not None and other.indicator_text is None) or self.col_number < other.col_number
 
     @property
     def is_bold(self) -> bool:
@@ -99,6 +121,15 @@ class ColumnSetting:
             header_number (int): The header number of this column
         """
         return self._header_number
+
+    @property
+    def col_number(self) -> int:
+        """A getter for col_number
+
+        Returns:
+            col_number (int): The column number of this column
+        """
+        return self._col_number
 
     @property
     def indicator_text(self) -> str | None:
@@ -154,10 +185,20 @@ class ColumnSetting:
         """A setter for header_number
 
         Args:
-            new_val (bool): The new value for the property
+            new_val (int): The new value for the property
         """
         self.__check_authorization()
         self._header_number = new_val
+
+    @col_number.setter
+    def col_number(self, new_val: int) -> None:
+        """A setter for col_number
+
+        Args:
+            new_val (int): The new value for the property
+        """
+        self.__check_authorization()
+        self._col_number = new_val
 
     @indicator_text.setter
     def indicator_text(self, new_val: str | None) -> None:
@@ -189,6 +230,8 @@ class ColumnSetting:
              col_setting_dict (dict): Dictionary representation of this setting
         """
         return {
+            "name": self._name,
+            "col_number": self._col_number,
             "is_bold": self._is_bold,
             "is_italic": self._is_italic,
             "contains_hyperlink": self._contains_hyperlink,
@@ -198,8 +241,14 @@ class ColumnSetting:
 
 
 def main() -> None:
-    """main for testing purposes"""
-    col_setting = ColumnSetting(name="nothing", read_only=False)
+    """main for testing purposes
+
+    Resources:
+        - Sorting a list:
+            https://docs.python.org/3/howto/sorting.html
+    """
+    col_setting = ColumnSetting(name="col 0",col_number=0, read_only= False, header_number=3)
+
     print(f"col_setting: {col_setting}")
 
     col_setting.indicator_text = "is an indicator"
@@ -232,8 +281,18 @@ def main() -> None:
     except ValueError as e:
         print(e)
 
-    print(f"immutable_col_setting: {col_setting}")
+    print(f"immutable_col_setting: {immutable_col_setting}")
 
+    cols = [
+        col_setting,
+        ColumnSetting(name="col 1",col_number=1),
+        ColumnSetting(name="col 2",col_number=2),
+        ColumnSetting(name="col 3",col_number=3),
+        ColumnSetting(name="col 4",col_number=4, indicator_text="Is indicator"),
+    ]
+    print(f"cols: {[str(x) for x in cols]}")
+    cols.sort()
+    print(f"cols sorted: {[str(x) for x in cols]}")
 
 if __name__ == "__main__":
     """main for testing purposes"""
