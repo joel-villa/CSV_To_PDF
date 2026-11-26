@@ -7,7 +7,7 @@ from warnings import warn
 from src.ColumnSetting import ColumnSetting
 
 
-class Setting:
+class SettingOld:
     """The settings object"""
 
     _read_only: bool
@@ -281,7 +281,7 @@ class Setting:
         return self._setting_map[column]
 
 
-def test_setting(setting: Setting) -> None:
+def test_setting(setting: SettingOld) -> None:
     """For testing purposes
 
     Args:
@@ -364,9 +364,9 @@ def test_setting(setting: Setting) -> None:
 
 def main() -> None:
     """main for testing purposes"""
-    setting = Setting(read_only=False)
+    setting = SettingOld(read_only=False)
     test_setting(setting)
-    immutable_setting = Setting()
+    immutable_setting = SettingOld()
     test_setting(immutable_setting)
 
 

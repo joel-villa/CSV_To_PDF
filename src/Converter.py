@@ -7,20 +7,20 @@ from pathlib import Path
 from markdown_pdf import MarkdownPdf, Section
 
 from src.SectionFactory import SectionFactory
-from src.Setting import Setting
+from src.SettingOld import SettingOld
 
 
 class Converter:
     """For conversion needs"""
 
-    _settings: Setting
+    _settings: SettingOld
     _section_factory: SectionFactory
 
     def __init__(
         self,
     ) -> None:
         """Initialize a converter (convert her?)"""
-        self._settings = Setting()
+        self._settings = SettingOld()
         self._section_factory = SectionFactory(self._settings)
 
     def convert(
