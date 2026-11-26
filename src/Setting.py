@@ -7,6 +7,8 @@ from warnings import warn
 from src.ColumnSetting import ColumnSetting
 
 
+DEFAULT_SETTING: str = "DEFAULT"
+
 class Setting:
     """The settings object"""
 
@@ -18,17 +20,25 @@ class Setting:
     _col_setting_map: dict[int, ColumnSetting]
     _PATH: Path = Path("settings/settings.json")
 
-    def __init__(self, title: str = "default", read_only: bool = True) -> None:
+    def __init__(
+        self,
+        tittle: str = DEFAULT_SETTING,
+        read_only: bool = True,
+        field_names: list[str] | None = None
+    ) -> None:
         """Loads the setting map from the settings path
 
         Args:
+            tittle (str): The title of these settings
             read_only (bool): Can these settings be updated?
+            field_names (list[str]): The field names of this setting. Only
+            provide these, when creating a new setting from scratch
         """
-        if (title == "default" and read_only is False):
+        if (tittle == DEFAULT_SETTING and read_only is False):
             raise ValueError("default setting is read only")
         self._read_only = read_only
         self._track_date = False
-        self._title = title
+        self._title = tittle
         self._preamble = ""
         self._col_order = []
         self._col_setting_map = {}
@@ -249,8 +259,6 @@ class Setting:
              col_setting (ColumnSetting): The column settings for the column
         """
         return self._col_setting_map[column]
-
-    def
 
     def set_indicator_text(
         self,
