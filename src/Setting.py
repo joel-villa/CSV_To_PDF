@@ -24,7 +24,7 @@ class Setting:
         self,
         tittle: str = DEFAULT_SETTING,
         read_only: bool = True,
-        field_names: list[str] | None = None
+        field_names: list[str] | None = None,
     ) -> None:
         """Loads the setting map from the settings path
 
@@ -36,13 +36,20 @@ class Setting:
         """
         if (tittle == DEFAULT_SETTING and read_only is False):
             raise ValueError("default setting is read only")
+        if field_names is not None:
+            read_only = False
+
+
         self._read_only = read_only
         self._track_date = False
         self._title = tittle
         self._preamble = ""
         self._col_order = []
         self._col_setting_map = {}
-        self.__load_settings()
+
+        if field_names is None:
+            # Field names of None => settings already exist load 'em
+            self.__load_settings()
 
     def __str__(self) -> str:
         """To string!
@@ -59,6 +66,11 @@ class Setting:
                 "col_order": self._col_order,
             }
         )
+
+    def __check_authorization(self) -> None:
+        """Check that this column setting is allowed to be written to"""
+        if self._read_only:
+            raise ValueError("This Setting is read only")
 
     def __load_settings(self) -> None:
         """Load the settings from the settings path
@@ -99,11 +111,6 @@ class Setting:
 
         with open(self._PATH, "w") as json_file:
             json.dump(json_dict, json_file, indent=4)
-
-    def __check_authorization(self) -> None:
-        """Check that this column setting is allowed to be written to"""
-        if self._read_only:
-            raise ValueError("This Setting is read only")
 
     @property
     def read_only(self) -> bool:
