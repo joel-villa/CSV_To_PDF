@@ -75,8 +75,9 @@ class Setting:
             self._preamble = json_dict["preamble"]
             self._track_date = json_dict["track_date"]
 
-    def __save_settings(self) -> None:
+    def save_settings(self) -> None:
         """Save the settings to the settings path"""
+        self.__check_authorization()
         setting_dict = {}
 
         for key, value in self._col_setting_map.items():
@@ -164,7 +165,7 @@ class Setting:
         """
         self.__check_authorization()
         self._doc_title = text
-        self.__save_settings()
+        self.save_settings()
 
     @track_date.setter
     def track_date(self, new_val: bool) -> None:
@@ -175,7 +176,7 @@ class Setting:
         """
         self.__check_authorization()
         self._track_date = new_val
-        self.__save_settings()
+        self.save_settings()
 
     @preamble.setter
     def preamble(self, new_val: str) -> None:
@@ -187,14 +188,14 @@ class Setting:
         self.__check_authorization()
         # TODO: add markdown link formatting
         self._preamble = new_val
-        self.__save_settings()
+        self.save_settings()
 
     def reset_col_order(self) -> None:
         """Reset the column ordering (just increasing)"""
         self.__check_authorization()
         num_cols = self.n_cols
         self._col_order = list(range(num_cols))
-        self.__save_settings()
+        self.save_settings()
 
     def swap_cols(self, col_one: int, col_two: int) -> None:
         """Swap the column ordering of the two columns
@@ -207,7 +208,7 @@ class Setting:
         temp = self._col_order[col_one]
         self.col_order[col_one] = self._col_order[col_two]
         self.col_order[col_two] = temp
-        self.__save_settings()
+        self.save_settings()
 
     def set_indicator_text(
         self,
@@ -222,27 +223,6 @@ class Setting:
     	"""
         self.__check_authorization()
         raise NotImplementedError
-
-    def get_default(self, column: int) -> ColumnSetting:
-        """Get the default settings for a column
-
-        Args:
-            column (int): The column to get the default settings of
-
-        Returns:
-             def_setting (ColumnSetting): The default column setting
-        """
-        return self._default_map[column]
-
-    def set_to_default(self, column: int) -> None:
-        """Set the column's settings back to default
-
-        Args:
-            column (int): The column to reset
-        """
-        self.__check_authorization()
-        self._col_setting_map[column] = self.get_default(column)
-        self.__save_settings()
 
     def update_setting(
         self, column: int, setting: ColumnSetting, create_new: bool = False
@@ -264,14 +244,9 @@ class Setting:
                 )
 
             self._col_order.append(self.n_cols)
-            # Creating new column setting, spooky
-            warn(
-                f"Column {column}, is not currently in settings, adding it is also setting as default."
-            )
-            self._default_map[column] = setting
 
         self._col_setting_map[column] = setting
-        self.__save_settings()
+        self.save_settings()
 
     def delete_column(self, column: int) -> None:
         """Delete the column from the settings
