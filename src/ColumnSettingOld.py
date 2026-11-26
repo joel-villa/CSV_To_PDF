@@ -3,7 +3,7 @@
 from typing import Any
 
 
-class ColumnSetting:
+class ColumnSettingOld:
     """The settings of a column"""
 
     _read_only: bool
@@ -177,7 +177,7 @@ class ColumnSetting:
 
 def main() -> None:
     """main for testing purposes"""
-    col_setting = ColumnSetting(read_only=False)
+    col_setting = ColumnSettingOld(read_only=False)
     print(f"col_setting: {col_setting}")
 
     col_setting.indicator_text = "is an indicator"
@@ -186,7 +186,7 @@ def main() -> None:
 
     print(f"col_setting: {col_setting}")
 
-    immutable_col_setting = ColumnSetting(read_only=True, **col_setting.to_dict())
+    immutable_col_setting = ColumnSettingOld(read_only=True, **col_setting.to_dict())
 
     print(f"immutable_col_setting: {col_setting}")
 

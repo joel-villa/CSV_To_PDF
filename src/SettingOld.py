@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from warnings import warn
 
-from src.ColumnSetting import ColumnSetting
+from src.ColumnSettingOld import ColumnSettingOld
 
 
 class SettingOld:
@@ -15,8 +15,8 @@ class SettingOld:
     _doc_title: str
     _preamble: str
     _col_order: list[int]
-    _setting_map: dict[int, ColumnSetting]
-    _default_map: dict[int, ColumnSetting]
+    _setting_map: dict[int, ColumnSettingOld]
+    _default_map: dict[int, ColumnSettingOld]
     _PATH: Path = Path("settings.json")
 
     def __init__(self, read_only: bool = True) -> None:
@@ -60,9 +60,9 @@ class SettingOld:
             setting_dict = json_dict["setting_map"]
 
             for key, value in default_dict.items():
-                self._default_map[int(key)] = ColumnSetting(**value)
+                self._default_map[int(key)] = ColumnSettingOld(**value)
             for key, value in setting_dict.items():
-                self._setting_map[int(key)] = ColumnSetting(**value)
+                self._setting_map[int(key)] = ColumnSettingOld(**value)
 
             self._col_order = json_dict["col_order"]
             self._doc_title = json_dict["doc_title"]
@@ -210,7 +210,7 @@ class SettingOld:
         self.col_order[col_two] = temp
         self.__save_settings()
 
-    def get_default(self, column: int) -> ColumnSetting:
+    def get_default(self, column: int) -> ColumnSettingOld:
         """Get the default settings for a column
 
         Args:
@@ -232,7 +232,7 @@ class SettingOld:
         self.__save_settings()
 
     def update_setting(
-        self, column: int, setting: ColumnSetting, create_new: bool = False
+        self, column: int, setting: ColumnSettingOld, create_new: bool = False
     ) -> None:
         """Update the setting for the specific column
 
@@ -269,7 +269,7 @@ class SettingOld:
         """
         raise NotImplementedError
 
-    def get_setting(self, column: int) -> ColumnSetting:
+    def get_setting(self, column: int) -> ColumnSettingOld:
         """Get the setting for a specific column
 
         Args:
@@ -288,7 +288,7 @@ def test_setting(setting: SettingOld) -> None:
         setting (Setting): the setting to test
     """
     num_cols = 7
-    default_setting = ColumnSetting()
+    default_setting = ColumnSettingOld()
     num_exceptions = 0
     possible_exceptions = 0
 
@@ -307,7 +307,7 @@ def test_setting(setting: SettingOld) -> None:
     try:
         setting.update_setting(
             column=0,
-            setting=ColumnSetting(read_only=True, indicator_text="Just messing around"),
+            setting=ColumnSettingOld(read_only=True, indicator_text="Just messing around"),
         )
     except ValueError:
         num_exceptions += 1
