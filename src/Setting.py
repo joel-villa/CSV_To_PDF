@@ -8,6 +8,7 @@ from src.ColumnSetting import ColumnSetting
 
 
 DEFAULT_SETTING: str = "DEFAULT"
+DEFAULT_HEADER_SIZE: int = 4
 
 class Setting:
     """The settings object"""
@@ -17,6 +18,7 @@ class Setting:
     _title: str
     _preamble: str
     _col_order: list[int]
+    #TODO: replace col_order with header column, indicator columns, and the rest of the columns!
     _col_setting_map: dict[int, ColumnSetting]
     _PATH: Path = Path("settings/settings.json")
 
@@ -25,6 +27,7 @@ class Setting:
         tittle: str = DEFAULT_SETTING,
         read_only: bool = True,
         field_names: list[str] | None = None,
+        header_size: int = DEFAULT_HEADER_SIZE,
     ) -> None:
         """Loads the setting map from the settings path
 
@@ -33,12 +36,12 @@ class Setting:
             read_only (bool): Can these settings be updated?
             field_names (list[str]): The field names of this setting. Only
             provide these, when creating a new setting from scratch
+            header_size (int): The size of the initial row
         """
         if (tittle == DEFAULT_SETTING and read_only is False):
             raise ValueError("default setting is read only")
         if field_names is not None:
             read_only = False
-
 
         self._read_only = read_only
         self._track_date = False
@@ -49,7 +52,21 @@ class Setting:
 
         if field_names is None:
             # Field names of None => settings already exist load 'em
-            self.__load_settings()
+            if header_size != DEFAULT_HEADER_SIZE:
+                warn(f"loading results from saved settings, header_size of {header_size} is being ignored")
+            self.__load_settings() #TODO make load_settings return True/False for success, upon failure, fallback to default
+        else:
+            # Create the default column settings!
+            for col, field_name in enumerate(field_names):
+                self._col_setting_map[col] = ColumnSetting(
+                    name=field_name,
+                    read_only=False,
+                )
+
+                if col == 0:
+                    # Header field is first column by default!
+                    self._col_setting_map[col].header_number = header_size
+
 
     def __str__(self) -> str:
         """To string!
