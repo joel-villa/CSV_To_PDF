@@ -36,13 +36,20 @@ class Setting:
         self._col_setting_map = {}
         self.__load_settings()
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """To string!
+
+        Returns:
+            setting_str (str): String represesntation of the settings
+	    """
         return str(
             {
-                "col_order": self._col_order,
-                "doc_title": self._doc_title,
+                "title": self._title,
+                "read_only": self._read_only,
                 "track_date": self._track_date,
+                "doc_title": self._doc_title,
                 "preamble": self._preamble,
+                "col_order": self._col_order,
             }
         )
 
