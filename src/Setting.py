@@ -65,7 +65,7 @@ class Setting:
         with open(self._PATH) as f:
             json_dict = json.load(f)
             json_dict = json_dict[self._title]
-            setting_dict = json_dict["setting_map"]
+            setting_dict = json_dict["col_setting_map"]
 
             for key, value in setting_dict.items():
                 self._col_setting_map[int(key)] = ColumnSetting(**value)
@@ -77,21 +77,16 @@ class Setting:
 
     def __save_settings(self) -> None:
         """Save the settings to the settings path"""
-
-        default_dict = {}
         setting_dict = {}
 
-        for key, value in self._default_map.items():
-            default_dict[key] = value.to_dict()
         for key, value in self._col_setting_map.items():
             setting_dict[key] = value.to_dict()
 
         json_dict = {
             "col_order": self._col_order,
-            "default_map": default_dict,
             "doc_title": self._doc_title,
             "preamble": self._preamble,
-            "setting_map": setting_dict,
+            "col_setting_map": setting_dict,
             "track_date": self._track_date,
         }
 
