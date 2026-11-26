@@ -13,7 +13,6 @@ class Setting:
     _read_only: bool
     _track_date: bool
     _title: str
-    _doc_title: str
     _preamble: str
     _col_order: list[int]
     _col_setting_map: dict[int, ColumnSetting]
@@ -30,7 +29,6 @@ class Setting:
         self._read_only = read_only
         self._track_date = False
         self._title = title
-        self._doc_title = ""
         self._preamble = ""
         self._col_order = []
         self._col_setting_map = {}
@@ -47,7 +45,6 @@ class Setting:
                 "title": self._title,
                 "read_only": self._read_only,
                 "track_date": self._track_date,
-                "doc_title": self._doc_title,
                 "preamble": self._preamble,
                 "col_order": self._col_order,
             }
@@ -62,6 +59,7 @@ class Setting:
             - Looping through a dictionary
                 https://www.w3schools.com/python/python_dictionaries_loop.asp
         """
+        #TODO: if setting does not exist, creating new setting
         with open(self._PATH) as f:
             json_dict = json.load(f)
             json_dict = json_dict[self._title]
@@ -71,7 +69,6 @@ class Setting:
                 self._col_setting_map[int(key)] = ColumnSetting(**value)
 
             self._col_order = json_dict["col_order"]
-            self._doc_title = json_dict["doc_title"]
             self._preamble = json_dict["preamble"]
             self._track_date = json_dict["track_date"]
 
@@ -85,7 +82,6 @@ class Setting:
 
         json_dict = {
             "col_order": self._col_order,
-            "doc_title": self._doc_title,
             "preamble": self._preamble,
             "col_setting_map": setting_dict,
             "track_date": self._track_date,
@@ -127,13 +123,13 @@ class Setting:
         return self._col_order
 
     @property
-    def doc_title(self) -> str:
+    def title(self) -> str:
         """A getter for the document title
 
         Returns:
              doc_title (str): The document title
         """
-        return self._doc_title
+        return self._title
 
     @property
     def track_date(self) -> bool:
@@ -153,8 +149,8 @@ class Setting:
         """
         return self._preamble
 
-    @doc_title.setter
-    def doc_title(self, text: str) -> None:
+    @title.setter
+    def title(self, text: str) -> None:
         """A setter for the doc_title
 
         Args:
@@ -164,7 +160,7 @@ class Setting:
                 https://realpython.com/python-property/#providing-write-only-attributes
         """
         self.__check_authorization()
-        self._doc_title = text
+        self._title = text
         self.save_settings()
 
     @track_date.setter
@@ -210,20 +206,6 @@ class Setting:
         self.col_order[col_two] = temp
         self.save_settings()
 
-    def set_indicator_text(
-        self,
-        cols: list[int],
-        text: list[str],
-    ) -> None:
-        """Set the indicator text of the given columns
-
-        Args:
-            cols (list[int]): The columns which are indicators
-            text (list[str]): The indicator text
-    	"""
-        self.__check_authorization()
-        raise NotImplementedError
-
     def update_setting(
         self, column: int, setting: ColumnSetting, create_new: bool = False
     ) -> None:
@@ -267,6 +249,27 @@ class Setting:
              col_setting (ColumnSetting): The column settings for the column
         """
         return self._col_setting_map[column]
+
+    def
+
+    def set_indicator_text(
+        self,
+        cols: list[int],
+        text: list[str],
+    ) -> None:
+        """Set the indicator text of the given columns
+
+        Args:
+            cols (list[int]): The columns which are indicators
+            text (list[str]): The indicator text
+    	"""
+        self.__check_authorization()
+        for i, col in enumerate(cols):
+            if i < len(text):
+                self._col_setting_map[col].indicator_text = text[i]
+            else:
+
+        if
 
 
 def test_setting(setting: Setting) -> None:
@@ -333,11 +336,11 @@ def test_setting(setting: Setting) -> None:
 
     possible_exceptions += 1
     try:
-        setting.doc_title = "A Terrible Tittle"
+        setting.title = "A Terrible Tittle"
     except ValueError:
         num_exceptions += 1
 
-    print(f"Title: {setting.doc_title}")
+    print(f"Title: {setting.title}")
 
     possible_exceptions += 1
     try:
