@@ -11,8 +11,6 @@ class ColumnSetting:
     _is_italic: bool
     _contains_hyperlink: bool
     _header_number: int
-    _indicator_text: str | None
-    # TODO: markdown header?
 
     def __init__(
         self,
@@ -20,7 +18,6 @@ class ColumnSetting:
         is_italic: bool = False,
         contains_hyperlink: bool = False,
         header_number: int = 0,
-        indicator_text: str | None = None,
         read_only: bool = True,
     ) -> None:
         """The setting of a specific column
@@ -30,7 +27,6 @@ class ColumnSetting:
             is_italic (bool): Should this coolumn be italicized
             contains_hyperlink (bool): Does this column contain a hyper link?
             header_number (int): The header number of this column
-            indicator_text (str | None): Is this column an indicator one? If
             so it has some default text
             read_only (bool): Is this Column Setting not to be updated?
         """
@@ -39,7 +35,6 @@ class ColumnSetting:
         self._is_italic = is_italic
         self._contains_hyperlink = contains_hyperlink
         self._header_number = header_number
-        self._indicator_text = indicator_text
 
     def __check_authorization(self) -> None:
         """Check that this column setting is allowed to be written to"""
@@ -97,16 +92,6 @@ class ColumnSetting:
         """
         return self._header_number
 
-    @property
-    def indicator_text(self) -> str | None:
-        """A getter for indicator_text
-
-        Returns:
-            indicator_text (str | None): Is this column an indicator one? If
-            so it has some default text
-        """
-        return self._indicator_text
-
     @is_bold.setter
     def is_bold(self, new_val: bool) -> None:
         """A setter for is_bold
@@ -147,16 +132,6 @@ class ColumnSetting:
         self.__check_authorization()
         self._header_number = new_val
 
-    @indicator_text.setter
-    def indicator_text(self, new_val: str | None) -> None:
-        """A setter for indicator_text
-
-        Args:
-            new_val (str): The new value for the property
-        """
-        self.__check_authorization()
-        self._indicator_text = new_val
-
     def to_dict(self) -> dict[str, Any]:
         """a dictionary representation of this column
 
@@ -171,7 +146,6 @@ class ColumnSetting:
             "is_italic": self._is_italic,
             "contains_hyperlink": self._contains_hyperlink,
             "header_number": self._header_number,
-            "indicator_text": self._indicator_text,
         }
 
 
