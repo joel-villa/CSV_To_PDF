@@ -178,7 +178,6 @@ class Setting:
         """
         self.__check_authorization()
         self._title = text
-        self.save_settings()
 
     @track_date.setter
     def track_date(self, new_val: bool) -> None:
@@ -189,7 +188,6 @@ class Setting:
         """
         self.__check_authorization()
         self._track_date = new_val
-        self.save_settings()
 
     @preamble.setter
     def preamble(self, new_val: str) -> None:
@@ -201,14 +199,12 @@ class Setting:
         self.__check_authorization()
         # TODO: add markdown link formatting
         self._preamble = new_val
-        self.save_settings()
 
     def reset_col_order(self) -> None:
         """Reset the column ordering (just increasing)"""
         self.__check_authorization()
         num_cols = self.n_cols
         self._col_order = list(range(num_cols))
-        self.save_settings()
 
     def swap_cols(self, col_one: int, col_two: int) -> None:
         """Swap the column ordering of the two columns
@@ -221,7 +217,6 @@ class Setting:
         temp = self._col_order[col_one]
         self.col_order[col_one] = self._col_order[col_two]
         self.col_order[col_two] = temp
-        self.save_settings()
 
     def update_setting(
         self, column: int, setting: ColumnSetting, create_new: bool = False
@@ -245,7 +240,6 @@ class Setting:
             self._col_order.append(self.n_cols)
 
         self._col_setting_map[column] = setting
-        self.save_settings()
 
     def delete_column(self, column: int) -> None:
         """Delete the column from the settings
