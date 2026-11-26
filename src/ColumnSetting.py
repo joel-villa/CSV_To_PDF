@@ -12,11 +12,11 @@ class ColumnSetting:
     _contains_hyperlink: bool
     _header_number: int
     _indicator_text: str | None
-    _field_name: str
+    _name: str
 
     def __init__(
         self,
-        field_name: str,
+        name: str,
         is_bold: bool = False,
         is_italic: bool = False,
         contains_hyperlink: bool = False,
@@ -27,7 +27,7 @@ class ColumnSetting:
         """The setting of a specific column
 
         Args:
-            field_name (str): The name of this column
+            name (str): The name of this column
             is_bold (bool): Should this column be bold?
             is_italic (bool): Should this coolumn be italicized
             contains_hyperlink (bool): Does this column contain a hyper link?
@@ -42,7 +42,7 @@ class ColumnSetting:
         self._contains_hyperlink = contains_hyperlink
         self._header_number = header_number
         self._indicator_text = indicator_text
-        self._field_name = field_name
+        self._name = name
 
     def __check_authorization(self) -> None:
         """Check that this column setting is allowed to be written to"""
@@ -111,13 +111,13 @@ class ColumnSetting:
         return self._indicator_text
 
     @property
-    def field_name(self) -> str:
+    def name(self) -> str:
         """A getter for field_name
 
         Returns:
             field_name (str): The name of this column
         """
-        return self._field_name
+        return self._name
 
     @is_bold.setter
     def is_bold(self, new_val: bool) -> None:
@@ -169,15 +169,15 @@ class ColumnSetting:
         self.__check_authorization()
         self._indicator_text = new_val
 
-    @field_name.setter
-    def field_name(self, new_val: str) -> None:
+    @name.setter
+    def name(self, new_val: str) -> None:
         """A setter for field_name
 
         Args:
             new_val (str): The new value for the property
         """
         self.__check_authorization()
-        self._field_name = new_val
+        self._name = new_val
 
     def to_dict(self) -> dict[str, Any]:
         """a dictionary representation of this column
@@ -199,7 +199,7 @@ class ColumnSetting:
 
 def main() -> None:
     """main for testing purposes"""
-    col_setting = ColumnSetting(field_name="nothing", read_only=False)
+    col_setting = ColumnSetting(name="nothing", read_only=False)
     print(f"col_setting: {col_setting}")
 
     col_setting.indicator_text = "is an indicator"
