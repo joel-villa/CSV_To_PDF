@@ -7,6 +7,7 @@ from pathlib import Path
 
 from src.Setting import Setting, get_saved_settings
 
+
 class CLI:
     """The Command Line Interface"""
 
@@ -23,6 +24,7 @@ class CLI:
         "Paste the path to the .csv file:\n",
         "=^..^=:\n",
     )
+
     def __create_new_setting(self, column_names: list[str]) -> str:
         """Create a new setting via user input
 
@@ -32,7 +34,9 @@ class CLI:
         Returns:
             setting_title (str): Title of the created and saved setting
         """
-        title = input("\nCreating new setting!\nEnter the title of the document (will be both the pdf header + what this setting gets saved as):\n")
+        title = input(
+            "\nCreating new setting!\nEnter the title of the document (will be both the pdf header + what this setting gets saved as):\n"
+        )
         setting = Setting(
             title=title,
             read_only=False,
@@ -40,7 +44,9 @@ class CLI:
         )
 
         # To save the date or not to save the date, that is the question
-        track_date = input("\nDisplay the Month & year the pdf was created? [y]es/[n]o: ")
+        track_date = input(
+            "\nDisplay the Month & year the pdf was created? [y]es/[n]o: "
+        )
         if track_date.lower() in {"y", "yes"}:
             print("Tracking the pdf creation date")
             setting.track_date = True
@@ -51,7 +57,9 @@ class CLI:
                 print("Not tracking the pdf creation date")
             setting.track_date = False
 
-        has_preamble = input("\nAny additional text to display (e.g. 'for the defacto list of resources see...')? [y]es, [n]o: ")
+        has_preamble = input(
+            "\nAny additional text to display (e.g. 'for the defacto list of resources see...')? [y]es, [n]o: "
+        )
 
         if has_preamble.lower() in {"y", "yes"}:
             setting.preamble = input("Please type the preamble and hit enter:\n")
@@ -59,21 +67,30 @@ class CLI:
             print(f"Defaulting to no preamble, invalid input: {track_date}")
 
         # Last but not least, determine if there are indicators (more complexity here)
-        has_indicators = input("\nAny indicator fields, default is no (e.g. 'Faith-based')? [y]es/[n]o: ")
+        has_indicators = input(
+            "\nAny indicator fields, default is no (e.g. 'Faith-based')? [y]es/[n]o: "
+        )
         if has_indicators.lower() in {"y", "yes"}:
             print("Columns:")
-            for i, col_name, in enumerate(column_names):
+            for (
+                i,
+                col_name,
+            ) in enumerate(column_names):
                 print(f"{i + 1}. {col_name}")
 
             done = False
             while not done:
-                col_name = input("Type the column number which is true/false OR 'q' to stop: ")
+                col_name = input(
+                    "Type the column number which is true/false OR 'q' to stop: "
+                )
                 if col_name == "q":
                     break
                 try:
                     col_idx = int(col_name) - 1
                     if col_idx >= 0 and col_idx < len(column_names):
-                        print(f"column {column_names[col_idx]} is set to an indicator column")
+                        print(
+                            f"column {column_names[col_idx]} is set to an indicator column"
+                        )
                         setting.set_indicator_text(col_idx)
                         continue
 
@@ -82,7 +99,9 @@ class CLI:
                 if col_name not in column_names:
                     print(f"Invalid column choice: {col_name}")
                 else:
-                    print(f"God I'm good...\tcolumn {col_name} is set to an indicator column")
+                    print(
+                        f"God I'm good...\tcolumn {col_name} is set to an indicator column"
+                    )
                     setting.set_indicator_text(column_names.index(col_name))
         elif has_indicators.lower() not in {"n", "no"}:
             print(f"Defaulting to no indicators, invalid input: {has_indicators}")
@@ -116,7 +135,7 @@ class CLI:
             - Index of an item in a list:
                 https://www.geeksforgeeks.org/python/python-list-index/
         """
-        #TODO: going back with 'q'
+        # TODO: going back with 'q'
         csv_path: Path
         pdf_path: Path
         str_path: str
@@ -132,7 +151,6 @@ class CLI:
             i += 1
             i %= len(self._QUERY_LIST)
 
-
         with open(csv_path) as csvfile:
             spamreader = csv.reader(csvfile, delimiter=",", quotechar='"')
             column_names = next(spamreader)
@@ -147,7 +165,9 @@ class CLI:
             print(f"{i + 1}. {valid_settings[i]}")
             i += 1
         print(f"{i + 1}. Choose this option to CREATE A NEW SETTING")
-        choice = input("Select one of the above settings by typing its corresponding number: ")
+        choice = input(
+            "Select one of the above settings by typing its corresponding number: "
+        )
 
         try:
             choice = int(choice) - 1
@@ -185,6 +205,7 @@ class CLI:
             num_copies += 1
 
         return csv_path, pdf_path, chosen_setting
+
 
 def main() -> None:
     """main for testing purposes"""

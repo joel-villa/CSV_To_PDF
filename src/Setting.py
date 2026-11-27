@@ -12,7 +12,7 @@ DEFAULT_PATH: Path = Path("settings/settings.json")
 
 
 def get_saved_settings(
-    n_cols:int=-1,
+    n_cols: int = -1,
     field_names: list[str] | None = None,
 ) -> list[str]:
     """Get those settings which are currently saved!
@@ -36,7 +36,7 @@ def get_saved_settings(
 
     if n_cols == -1:
         # Return all setting names
-        return list(json_dict.keys()[1:]) # First key is not for user to see
+        return list(json_dict.keys()[1:])  # First key is not for user to see
 
     setting_names = []
     for i, key in enumerate(json_dict):
@@ -62,7 +62,6 @@ def get_saved_settings(
                 setting_names.append(key)
 
     return setting_names
-
 
 
 class Setting:
@@ -411,7 +410,7 @@ class Setting:
 
         Returns:
             col_names (list[str]): The column names
-	    """
+        """
         return [value.name for value in self._col_setting_map.values()]
 
 

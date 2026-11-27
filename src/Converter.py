@@ -43,7 +43,6 @@ class Converter:
 
         md_pdf = MarkdownPdf()
 
-
         # Reading the csv, using the SectionFactory to create the strings to write
         with open(csv_path) as csvfile:
             spamreader = csv.reader(csvfile, delimiter=",", quotechar='"')
