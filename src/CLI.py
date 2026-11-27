@@ -59,16 +59,28 @@ class CLI:
             print(f"Defaulting to no preamble, invalid input: {track_date}")
 
         # Last but not least, determine if there are indicators (more complexity here)
-        has_indicators = input("\nAny indicator fields, default is no (e.g. 'Faith-based'? [y]es/[n]o: ")
+        has_indicators = input("\nAny indicator fields, default is no (e.g. 'Faith-based')? [y]es/[n]o: ")
         if has_indicators.lower() in {"y", "yes"}:
-            print(f"column-names: {column_names}")
+            print("Columns:")
+            for i, col_name, in enumerate(column_names):
+                print(f"{i + 1}. {col_name}")
+
             done = False
             while not done:
-                col_name = input("Type the column-name which only has true/false values OR 'q' to stop: ")
+                col_name = input("Type the column number which is true/false OR 'q' to stop: ")
                 if col_name == "q":
                     break
+                try:
+                    col_idx = int(col_name) - 1
+                    if col_idx >= 0 and col_idx < len(column_names):
+                        print(f"column {column_names[col_idx]} is set to an indicator column")
+                        setting.set_indicator_text(col_idx)
+                        continue
+
+                except ValueError:
+                    pass
                 if col_name not in column_names:
-                    print(f"Invalid column-name: {col_name}")
+                    print(f"Invalid column choice: {col_name}")
                 else:
                     print(f"column {col_name} is set to an indicator column")
                     setting.set_indicator_text(column_names.index(col_name))
@@ -128,11 +140,14 @@ class CLI:
         valid_settings = get_saved_settings(field_names=column_names)
         chosen_setting = None
 
-        print("\nSelect a setting by typing its corresponding number and hitting enter:")
-        print("0. DEFAULT")
-        for i in range(len(valid_settings)):
+        print("\nSetting Options:")
+        print("0. This is a DEFAULT option")
+        i = 0
+        while i < len(valid_settings):
             print(f"{i + 1}. {valid_settings[i]}")
-        choice = input("OR create a new setting by typing anything else and hitting enter: ")
+            i += 1
+        print(f"{i + 1}. Choose this option to CREATE A NEW SETTING")
+        choice = input("Select one of the above settings by typing its corresponding number: ")
 
         try:
             choice = int(choice) - 1
@@ -168,8 +183,6 @@ class CLI:
                 break
 
             num_copies += 1
-
-        pdf_path.touch()
 
         return csv_path, pdf_path, chosen_setting
 
