@@ -32,8 +32,7 @@ class CLI:
         Returns:
             setting_title (str): Title of the created and saved setting
         """
-        print("Creating new setting!")
-        title = input("Enter the title of the document (will be both the pdf header + what this setting gets saved as):")
+        title = input("\nCreating new setting!\nEnter the title of the document (will be both the pdf header + what this setting gets saved as):\n")
         setting = Setting(
             title=title,
             read_only=False,
@@ -41,7 +40,7 @@ class CLI:
         )
 
         # To save the date or not to save the date, that is the question
-        track_date = input("Display the Month & year the pdf was created? [y]es/[n]o")
+        track_date = input("\nDisplay the Month & year the pdf was created? [y]es/[n]o: ")
         if track_date.lower() in {"y", "yes"}:
             print("Tracking the pdf creation date")
             setting.track_date = True
@@ -52,20 +51,20 @@ class CLI:
                 print("Not tracking the pdf creation date")
             setting.track_date = False
 
-        has_preamble = input("Any additional text to display (e.g. 'for the defacto list of resources see...')? [y]es, [n]o")
+        has_preamble = input("\nAny additional text to display (e.g. 'for the defacto list of resources see...')? [y]es, [n]o: ")
 
         if has_preamble.lower() in {"y", "yes"}:
-            setting.preamble = input("Please type the preamble and hit enter:")
+            setting.preamble = input("Please type the preamble and hit enter:\n")
         elif has_preamble.lower() not in {"n", "no"}:
             print(f"Defaulting to no preamble, invalid input: {track_date}")
 
         # Last but not least, determine if there are indicators (more complexity here)
-        has_indicators = input("Any indicator fields, default is no (e.g. 'Faith-based'? [y]es/[n]o")
+        has_indicators = input("\nAny indicator fields, default is no (e.g. 'Faith-based'? [y]es/[n]o: ")
         if has_indicators.lower() in {"y", "yes"}:
             done = False
             while not done:
                 print(f"column-names: {column_names}")
-                col_name = input("Type the column-name which only has true/false values OR 'q' to stop:")
+                col_name = input("Type the column-name which only has true/false values OR 'q' to stop: ")
                 if col_name == "q":
                     break
                 if col_name not in column_names:
@@ -76,6 +75,7 @@ class CLI:
             print(f"Defaulting to no indicators, invalid input: {has_indicators}")
 
         print(f"Saving Setting: {setting}")
+        setting.save_settings()
         return title
 
     def run(self) -> tuple[Path, Path, str | None]:
@@ -127,11 +127,18 @@ class CLI:
         valid_settings = get_saved_settings(field_names=column_names)
         chosen_setting = None
 
-        print("Select a setting:")
+        print("\nSelect a setting by typing its corresponding number and hitting enter:")
         print("0. DEFAULT")
         for i in range(len(valid_settings)):
             print(f"{i + 1}. {valid_settings[i]}")
-        choice = int(input("Type any other key and hit enter to create a new setting")) - 1
+        choice = input("OR type anything else and hiting enter: ")
+
+        try:
+            choice = int(choice) - 1
+        except ValueError:
+            if choice.lower() == "anything else":
+                print("How polite\t=]")
+            choice = -2
 
         if choice in range(len(valid_settings)):
             chosen_setting = valid_settings[choice]
