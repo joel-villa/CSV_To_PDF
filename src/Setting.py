@@ -45,17 +45,21 @@ def get_saved_settings(
             continue
 
         temp_setting = Setting(title=key)
-        if temp_setting.n_cols == key:
+        if temp_setting.n_cols == n_cols or n_cols == -1:
             if field_names is None:
                 setting_names.append(key)
                 continue
             setting_col_names = temp_setting.col_names()
+            append_setting = True
             for i, set_col_name in enumerate(setting_col_names):
-                if field_names[i] != set_col_name[i]:
+                if field_names[i] != set_col_name:
                     # Do not include settings with different header names
+                    append_setting = False
                     continue
-            # A perfect match -> save it
-            setting_names.append(key)
+
+            if append_setting:
+                # A perfect match -> save it
+                setting_names.append(key)
 
     return setting_names
 
