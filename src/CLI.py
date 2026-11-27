@@ -82,7 +82,7 @@ class CLI:
                 if col_name not in column_names:
                     print(f"Invalid column choice: {col_name}")
                 else:
-                    print(f"column {col_name} is set to an indicator column")
+                    print(f"God I'm good...\tcolumn {col_name} is set to an indicator column")
                     setting.set_indicator_text(column_names.index(col_name))
         elif has_indicators.lower() not in {"n", "no"}:
             print(f"Defaulting to no indicators, invalid input: {has_indicators}")
