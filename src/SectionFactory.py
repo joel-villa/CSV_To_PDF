@@ -2,27 +2,24 @@
 
 import numpy as np
 
-from src.SettingOld import SettingOld
+from src.Setting import Setting
 
 
 class SectionFactory:
     """Creates Sections (string representation of rows) based on settings"""
 
-    _setting: SettingOld
+    _setting: Setting
 
     def __init__(
         self,
-        setting: SettingOld | None = None,
+        setting: Setting,
     ) -> None:
         """Create a Section Factory
 
         Args:
             setting (Setting): Configuration of file output
         """
-        if setting is None:
-            self._setting = SettingOld()
-        else:
-            self._setting = setting
+        self._setting = setting
 
     def to_section(self, field_values: list[str]) -> str:
         """Create a section given the field values
