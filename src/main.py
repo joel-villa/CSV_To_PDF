@@ -14,11 +14,12 @@ def main() -> None:
     """
 
     cli = CLI()
-    csv_path, pdf_path = cli.run()
+    csv_path, pdf_path, setting_title = cli.run()
     converter = Converter()
     converter.convert(
         csv_path=csv_path,
         pdf_path=pdf_path,
+        setting_title=setting_title,
     )
 
     print(f'A pdf file was successfully created at "{pdf_path}"')
