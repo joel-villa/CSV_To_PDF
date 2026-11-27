@@ -23,7 +23,7 @@ class Setting:
 
     def __init__(
         self,
-        tittle: str = DEFAULT_SETTING,
+        title: str = DEFAULT_SETTING,
         read_only: bool = True,
         field_names: list[str] | None = None,
         header_size: int = DEFAULT_HEADER_SIZE,
@@ -31,22 +31,22 @@ class Setting:
         """Loads the setting map from the settings path
 
         Args:
-            tittle (str): The title of these settings
+            title (str): The title of these settings
             read_only (bool): Can these settings be updated?
             field_names (list[str]): The field names of this setting. Only
             provide these, when creating a new setting from scratch
             header_size (int): The size of the initial row
         """
-        if (tittle == DEFAULT_SETTING and read_only is False):
+        if (title == DEFAULT_SETTING and read_only is False):
             raise ValueError("default setting is read only")
-        if (tittle == DEFAULT_SETTING and field_names is None):
+        if (title == DEFAULT_SETTING and field_names is None):
             raise ValueError("field_names must be provided for default settings (HINT: do `[str(x) for x in range(num_cols)]`)")
         if field_names is not None:
             read_only = False
 
         self._read_only = read_only
         self._track_date = False
-        self._title = tittle
+        self._title = title
         self._preamble = ""
         self._col_order = []
         self._col_setting_map = {}
@@ -113,19 +113,24 @@ class Setting:
     def save_settings(self) -> None:
         """Save the settings to the settings path"""
         self.__check_authorization()
-        setting_dict = {}
+        col_map = {}
 
         for key, value in self._col_setting_map.items():
-            setting_dict[key] = value.to_dict()
+            col_map[key] = value.to_dict()
 
-        json_dict = {
+        this_setting_dict = {
             "col_order": self._col_order,
             "preamble": self._preamble,
-            "col_setting_map": setting_dict,
+            "col_setting_map": col_map,
             "track_date": self._track_date,
         }
 
+        with open(self._PATH, "r") as json_file:
+            json_dict = json.load(json_file)
+
         with open(self._PATH, "w") as json_file:
+            json_dict[self._title] = this_setting_dict
+
             json.dump(json_dict, json_file, indent=4)
 
     @property
@@ -223,9 +228,9 @@ class Setting:
             - dictionary keys
                 https://stackoverflow.com/questions/16819222/how-do-i-return-dictionary-keys-as-a-list-in-python
         """
-        col_order = list(self._col_setting_map.keys())
-        col_order.sort()
-        self._col_order = col_order
+        sorted_settings = list(self._col_setting_map.values())
+        sorted_settings.sort()
+        self._col_order = [col_setting.col_number for col_setting in sorted_settings]
 
 #    def swap_cols(self, col_one: int, col_two: int) -> None:
 #        """Swap the column ordering of the two columns
@@ -359,22 +364,22 @@ def main() -> None:
 
 
     non_default = Setting(
-        tittle="My Settings",
+        title="My Settings",
         read_only=False,
-        field_names=["tittle field", "other field", "yet another", "this field indicates"]
+        field_names=["title field", "other field", "yet another", "this field indicates"]
     )
     print(str(non_default))
-    for col in default_setting.col_order:
+    for col in non_default.col_order:
         print(f"{col}: {non_default.get_setting(col)}")
 
     non_default.set_indicator_text(3, "Is Indicator Indeed")
     print(str(non_default))
-    for col in default_setting.col_order:
+    for col in non_default.col_order:
         print(f"{col}: {non_default.get_setting(col)}")
 
     non_default.set_indicator_text(2, "Is Indicator Indeed")
     print(str(non_default))
-    for col in default_setting.col_order:
+    for col in non_default.col_order:
         print(f"{col}: {non_default.get_setting(col)}")
 
     try:
@@ -384,10 +389,12 @@ def main() -> None:
 
     non_default.set_to_default(column=non_default.n_cols, create_new=True)
     print(str(non_default))
-    for col in default_setting.col_order:
+    for col in non_default.col_order:
         print(f"{col}: {non_default.get_setting(col)}")
 
     non_default.save_settings()
+
+    saved_settings = Setting(title="My Settings")
 
 
 if __name__ == "__main__":
