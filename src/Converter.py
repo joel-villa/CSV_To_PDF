@@ -7,26 +7,17 @@ from pathlib import Path
 from markdown_pdf import MarkdownPdf, Section
 
 from src.SectionFactory import SectionFactory
-from src.SettingOld import SettingOld
+from src.Setting import Setting
 
 
 class Converter:
     """For conversion needs"""
 
-    _settings: SettingOld
-    _section_factory: SectionFactory
-
-    def __init__(
-        self,
-    ) -> None:
-        """Initialize a converter (convert her?)"""
-        self._settings = SettingOld()
-        self._section_factory = SectionFactory(self._settings)
-
     def convert(
         self,
         csv_path: Path,
         pdf_path: Path | None = None,
+        setting_title: str | None = None,
     ) -> None:
         """Convert the csv to a pdf file
 
@@ -46,24 +37,36 @@ class Converter:
         """
         if pdf_path is None:
             raise NotImplementedError
+        setting: Setting
+        section_factory: SectionFactory
+        section = ""
 
         md_pdf = MarkdownPdf()
 
-        # Initial section
-        section = f"# {self._settings.doc_title}\n"
-        if self._settings.track_date:
-            section = f"{section}Last updated {datetime.now().strftime('%B')} {datetime.now().year}\n"
-        if self._settings.preamble != "":
-            section = f"{section}{self._settings.preamble}\n"
 
         # Reading the csv, using the SectionFactory to create the strings to write
         with open(csv_path) as csvfile:
             spamreader = csv.reader(csvfile, delimiter=",", quotechar='"')
-            for i, row in enumerate(spamreader):
-                if i == 0:
-                    self._section_factory.field_names = row
-                    continue
-                section = f"{section}{self._section_factory.to_section(row)}"
+            column_names = next(spamreader)
+
+            if setting_title is None:
+                # Default settings when setting_title is None
+                setting = Setting(field_names=column_names)
+            else:
+                setting = Setting(title=setting_title)
+
+            # Initial section
+            section = f"# {setting.title}\n"
+            if setting.track_date:
+                section = f"{section}Last updated {datetime.now().strftime('%B')} {datetime.now().year}\n"
+            if setting.preamble != "":
+                section = f"{section}{setting.preamble}\n"
+
+            # The section factory!
+            section_factory = SectionFactory(setting)
+
+            for row in spamreader:
+                section = f"{section}{section_factory.to_section(row)}"
 
         file_path = "style.css"
         with open(file_path, "r") as file:
@@ -75,6 +78,8 @@ class Converter:
         )
         md_pdf.meta["title"] = self._settings.doc_title
         md_pdf.toc = []
+
+        pdf_path.touch()
         md_pdf.save(pdf_path)
 
 
@@ -83,7 +88,6 @@ def main() -> None:
 
     converter = Converter()
     pdf = Path("test_out.pdf")
-    pdf.touch()
     converter.convert(
         csv_path=Path("resources.csv"),
         pdf_path=pdf,
