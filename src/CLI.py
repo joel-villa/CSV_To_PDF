@@ -4,13 +4,13 @@
 
 from pathlib import Path
 
-from src.SettingOld import SettingOld
+from src.Setting import Setting #TODO: settings shtuff
 
 
 class CLI:
     """The Command Line Interface"""
 
-    _settings: SettingOld
+    _settings: Setting
     _QUERY_LIST = (
         "Paste the path to the .csv file:\n",
         "Paste the path to the .csv file:\n",
@@ -29,7 +29,7 @@ class CLI:
         self,
     ) -> None:
         """Construct that CLI ASAP"""
-        self._settings = SettingOld(read_only=False)
+        self._settings = Setting(read_only=False)
 
     def run(self) -> tuple[Path, Path]:
         """Do all that user interaction goodness
