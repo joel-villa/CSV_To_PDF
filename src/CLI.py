@@ -61,15 +61,16 @@ class CLI:
         # Last but not least, determine if there are indicators (more complexity here)
         has_indicators = input("\nAny indicator fields, default is no (e.g. 'Faith-based'? [y]es/[n]o: ")
         if has_indicators.lower() in {"y", "yes"}:
+            print(f"column-names: {column_names}")
             done = False
             while not done:
-                print(f"column-names: {column_names}")
                 col_name = input("Type the column-name which only has true/false values OR 'q' to stop: ")
                 if col_name == "q":
                     break
                 if col_name not in column_names:
                     print(f"Invalid column-name: {col_name}")
                 else:
+                    print(f"column {col_name} is set to an indicator column")
                     setting.set_indicator_text(column_names.index(col_name))
         elif has_indicators.lower() not in {"n", "no"}:
             print(f"Defaulting to no indicators, invalid input: {has_indicators}")
@@ -131,13 +132,13 @@ class CLI:
         print("0. DEFAULT")
         for i in range(len(valid_settings)):
             print(f"{i + 1}. {valid_settings[i]}")
-        choice = input("OR type anything else and hiting enter: ")
+        choice = input("OR create a new setting by typing anything else and hitting enter: ")
 
         try:
             choice = int(choice) - 1
         except ValueError:
             if choice.lower() == "anything else":
-                print("How polite\t=]")
+                print("...\n...\n...\nHow polite\n\t=]")
             choice = -2
 
         if choice in range(len(valid_settings)):
