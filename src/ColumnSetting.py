@@ -46,7 +46,7 @@ class ColumnSetting:
         self._header_number = header_number
         self._col_number = col_number
         self._indicator_text = indicator_text
-        self._name = name
+        self.name = name
 
     def __check_authorization(self) -> None:
         """Check that this column setting is allowed to be written to"""
@@ -219,6 +219,8 @@ class ColumnSetting:
         """
         self.__check_authorization()
         self._name = new_val
+        if self._name.lower() == "website":
+            self.contains_hyperlink = True
 
     def to_dict(self) -> dict[str, Any]:
         """a dictionary representation of this column
