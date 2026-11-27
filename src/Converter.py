@@ -76,7 +76,7 @@ class Converter:
             Section(section),
             user_css=css_settings,
         )
-        md_pdf.meta["title"] = self._settings.doc_title
+        md_pdf.meta["title"] = setting.title
         md_pdf.toc = []
 
         pdf_path.touch()
