@@ -46,7 +46,9 @@ class ColumnSetting:
         self._header_number = header_number
         self._col_number = col_number
         self._indicator_text = indicator_text
-        self.name = name
+        self._name = name
+        if self._name.lower() == "website": #TODO: copied code => make one function to call
+            self._contains_hyperlink = True
 
     def __check_authorization(self) -> None:
         """Check that this column setting is allowed to be written to"""
@@ -84,7 +86,21 @@ class ColumnSetting:
             - Making a class sortable:
                 https://stackoverflow.com/questions/7152497/making-a-python-user-defined-class-sortable-hashable
         """
-        return self.header_number > other.header_number or (self.indicator_text is not None and other.indicator_text is None) or self.col_number < other.col_number
+        return (
+            -self.header_number,
+            self.indicator_text is None,
+            self.col_number
+        ) < (
+            -other.header_number,
+            other.indicator_text is None,
+            other.col_number
+        )
+        # if self.header_number > other.header_number:
+        #     return True
+        # if self.indicator_text is not None and other.indicator_text is None:
+        #     return True
+
+        # return self.col_number < other.col_number
 
     @property
     def is_bold(self) -> bool:
