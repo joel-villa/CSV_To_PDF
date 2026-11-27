@@ -318,7 +318,7 @@ class Setting:
     def set_indicator_text(
         self,
         cols: list[int],
-        text: list[str],
+        text: list[str] = [],
     ) -> None:
         """Set the indicator text of the given columns
 
@@ -327,11 +327,15 @@ class Setting:
             text (list[str]): The indicator text
     	"""
         self.__check_authorization()
+        if len(cols) < len(text):
+            raise ValueError(f"Column count ({len(cols)}) cannot be less than text count ({len(text)})")
+
         for i, col in enumerate(cols):
             if i < len(text):
                 self._col_setting_map[col].indicator_text = text[i]
             else:
-        if
+                indicator_text = f"Is {self._col_setting_map[col].name}"
+                self._col_setting_map[col].indicator_text = indicator_text.title()
 
 
 def test_setting(setting: Setting) -> None:
