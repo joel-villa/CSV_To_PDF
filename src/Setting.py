@@ -350,15 +350,6 @@ class Setting:
 
         self.__reset_col_order()
 
-
-def test_setting(setting: Setting) -> None:
-    """For testing purposes
-
-    Args:
-        setting (Setting): the setting to test
-    """
-
-
 def main() -> None:
     """main for testing purposes"""
     default_setting = Setting(field_names=["one", "two", "three"])
