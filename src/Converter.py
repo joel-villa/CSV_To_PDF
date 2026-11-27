@@ -58,9 +58,9 @@ class Converter:
             # Initial section
             section = f"# {setting.title}\n"
             if setting.track_date:
-                section = f"{section}Last updated {datetime.now().strftime('%B')} {datetime.now().year}\n"
+                section = f"{section}Last updated {datetime.now().strftime('%B')} {datetime.now().year}  \n"
             if setting.preamble != "":
-                section = f"{section}{setting.preamble}\n"
+                section = f"{section}{setting.preamble}  \n"
 
             # The section factory!
             section_factory = SectionFactory(setting)
