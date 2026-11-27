@@ -102,7 +102,7 @@ class Setting:
             setting_dict = json_dict["col_setting_map"]
 
             for key, value in setting_dict.items():
-                self._col_setting_map[int(key)] = ColumnSetting(**value)
+                self._col_setting_map[int(key)] = ColumnSetting(read_only=self._read_only, **value)
 
             self._col_order = json_dict["col_order"]
             self._preamble = json_dict["preamble"]
@@ -283,6 +283,7 @@ class Setting:
             default at the same time
         """
         self.__check_authorization()
+        setting = ColumnSetting(read_only=self._read_only, **setting.to_dict())
         column = setting.col_number
         if self._col_setting_map.get(column) is None:
             if create_new is False:
@@ -330,7 +331,6 @@ class Setting:
             if i < len(text):
                 self._col_setting_map[col].indicator_text = text[i]
             else:
-
         if
 
 
