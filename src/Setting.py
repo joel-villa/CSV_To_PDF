@@ -39,6 +39,8 @@ class Setting:
         """
         if (tittle == DEFAULT_SETTING and read_only is False):
             raise ValueError("default setting is read only")
+        if (tittle == DEFAULT_SETTING and field_names is None):
+            raise ValueError("field_names must be provided for default settings (HINT: do `[str(x) for x in range(num_cols)]`)")
         if field_names is not None:
             read_only = False
 
@@ -62,7 +64,7 @@ class Setting:
                     create_new=True,
                 )
                 self._col_setting_map[col].name = field_name
-            self.reset_col_order()
+            self.__reset_col_order()
 
 
     def __str__(self) -> str:
@@ -214,7 +216,7 @@ class Setting:
         # TODO: add markdown link formatting
         self._preamble = new_val
 
-    def reset_col_order(self) -> None:
+    def __reset_col_order(self) -> None:
         """Reset the column ordering (just increasing)
 
         Resources:
@@ -225,17 +227,17 @@ class Setting:
         col_order.sort()
         self._col_order = col_order
 
-    def swap_cols(self, col_one: int, col_two: int) -> None:
-        """Swap the column ordering of the two columns
-
-        Args:
-            col_one (int): First column to swap
-            col_two (int): Second column to swap
-        """
-        self.__check_authorization()
-        temp = self._col_order[col_one]
-        self.col_order[col_one] = self._col_order[col_two]
-        self.col_order[col_two] = temp
+#    def swap_cols(self, col_one: int, col_two: int) -> None:
+#        """Swap the column ordering of the two columns
+#
+#        Args:
+#            col_one (int): First column to swap
+#            col_two (int): Second column to swap
+#        """
+#        self.__check_authorization()
+#        temp = self._col_order[col_one]
+#        self.col_order[col_one] = self._col_order[col_two]
+#        self.col_order[col_two] = temp
 
     def get_default(self, column: int) -> ColumnSetting:
         """Get the default settings for a column
@@ -268,6 +270,9 @@ class Setting:
             column (int): The column to reset
         """
         self.__check_authorization()
+        if column > self.n_cols:
+            warn(f"Requested to create column {column}, going to create column {self.n_cols} instead")
+            column = self.n_cols
         self.update_setting(setting=self.get_default(column), create_new=create_new)
 
     def update_setting(
@@ -294,15 +299,16 @@ class Setting:
             self._col_order.append(self.n_cols)
 
         self._col_setting_map[column] = setting
+        self.__reset_col_order()
 
-    def delete_column(self, column: int) -> None:
-        """Delete the column from the settings
-
-        Args:
-            column (int): The column to remove
-
-        """
-        raise NotImplementedError
+#    def delete_column(self, column: int) -> None:
+#        """Delete the column from the settings
+#
+#        Args:
+#            column (int): The column to remove
+#
+#        """
+#        raise NotImplementedError
 
     def get_setting(self, column: int) -> ColumnSetting:
         """Get the setting for a specific column
@@ -317,25 +323,23 @@ class Setting:
 
     def set_indicator_text(
         self,
-        cols: list[int],
-        text: list[str] = [],
+        col: int,
+        text: str | None = None,
     ) -> None:
         """Set the indicator text of the given columns
 
         Args:
-            cols (list[int]): The columns which are indicators
-            text (list[str]): The indicator text
+            col (int): The columns which is an indicator
+            text (str): The indicator text
     	"""
         self.__check_authorization()
-        if len(cols) < len(text):
-            raise ValueError(f"Column count ({len(cols)}) cannot be less than text count ({len(text)})")
+        if text:
+            self._col_setting_map[col].indicator_text = text
+        else:
+            indicator_text = f"Is {self._col_setting_map[col].name}"
+            self._col_setting_map[col].indicator_text = indicator_text.title()
 
-        for i, col in enumerate(cols):
-            if i < len(text):
-                self._col_setting_map[col].indicator_text = text[i]
-            else:
-                indicator_text = f"Is {self._col_setting_map[col].name}"
-                self._col_setting_map[col].indicator_text = indicator_text.title()
+        self.__reset_col_order()
 
 
 def test_setting(setting: Setting) -> None:
@@ -344,92 +348,46 @@ def test_setting(setting: Setting) -> None:
     Args:
         setting (Setting): the setting to test
     """
-    num_cols = 7
-    num_exceptions = 0
-    possible_exceptions = 0
-
-    possible_exceptions += 1
-    try:
-        for i in range(num_cols):
-            col_setting = ColumnSetting(
-                col_number=i,
-                name=str(i),
-            )
-            setting.update_setting(
-                setting=col_setting,
-                create_new=True,
-            )
-    except ValueError:
-        num_exceptions += 1
-
-    for i in range(num_cols):
-        col_setting = setting.get_setting(i)
-        print(f"col_setting {i}: {col_setting}")
-
-    possible_exceptions += 1
-    try:
-        setting.update_setting(
-            setting=ColumnSetting(col_number=0, name="rowest zeroest", read_only=True, indicator_text="Just messing around"),
-        )
-    except ValueError:
-        num_exceptions += 1
-
-    print(f"col_setting 0: {setting.get_setting(0)}")
-
-    possible_exceptions += 1
-    try:
-        setting.set_to_default(0)
-    except ValueError:
-        num_exceptions += 1
-
-    print(f"col_setting 0: {setting.get_setting(0)}")
-
-    print(f"col_order: {setting.col_order}")
-
-    possible_exceptions += 1
-    try:
-        setting.swap_cols(
-            col_one=0,
-            col_two=1,
-        )
-    except ValueError:
-        num_exceptions += 1
-
-    print(f"col_order: {setting.col_order}")
-
-    possible_exceptions += 1
-    try:
-        setting.reset_col_order()
-    except ValueError:
-        num_exceptions += 1
-
-    print(f"col_order: {setting.col_order}")
-
-    possible_exceptions += 1
-    try:
-        setting.title = "A Terrible Tittle"
-    except ValueError:
-        num_exceptions += 1
-
-    print(f"Title: {setting.title}")
-
-    possible_exceptions += 1
-    try:
-        setting.preamble = "A terrifying preamble"
-    except ValueError:
-        num_exceptions += 1
-
-    print(f"Preamble: {setting.preamble}")
-
-    print(f"num_exceptions: {num_exceptions} out of {possible_exceptions}")
 
 
 def main() -> None:
     """main for testing purposes"""
-    setting = Setting(read_only=False)
-    test_setting(setting)
-    immutable_setting = Setting()
-    test_setting(immutable_setting)
+    default_setting = Setting(field_names=["one", "two", "three"])
+    print(str(default_setting))
+    for col in default_setting.col_order:
+        print(f"{col}: {default_setting.get_setting(col)}")
+
+
+    non_default = Setting(
+        tittle="My Settings",
+        read_only=False,
+        field_names=["tittle field", "other field", "yet another", "this field indicates"]
+    )
+    print(str(non_default))
+    for col in default_setting.col_order:
+        print(f"{col}: {non_default.get_setting(col)}")
+
+    non_default.set_indicator_text(3, "Is Indicator Indeed")
+    print(str(non_default))
+    for col in default_setting.col_order:
+        print(f"{col}: {non_default.get_setting(col)}")
+
+    non_default.set_indicator_text(2, "Is Indicator Indeed")
+    print(str(non_default))
+    for col in default_setting.col_order:
+        print(f"{col}: {non_default.get_setting(col)}")
+
+    try:
+        non_default.set_to_default(column=non_default.n_cols + 1)
+    except ValueError as e:
+        print(e)
+
+    non_default.set_to_default(column=non_default.n_cols, create_new=True)
+    print(str(non_default))
+    for col in default_setting.col_order:
+        print(f"{col}: {non_default.get_setting(col)}")
+
+    non_default.save_settings()
 
 
 if __name__ == "__main__":
