@@ -52,9 +52,7 @@ class Converter:
         # Initial section
         section = f"# {self._settings.doc_title}\n"
         if self._settings.track_date:
-            section = (
-                f"{section}Last updated {datetime.now().strftime('%B')} {datetime.now().year}\n"
-            )
+            section = f"{section}Last updated {datetime.now().strftime('%B')} {datetime.now().year}\n"
         if self._settings.preamble != "":
             section = f"{section}{self._settings.preamble}\n"
 

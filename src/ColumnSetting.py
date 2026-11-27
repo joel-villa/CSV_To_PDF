@@ -47,7 +47,9 @@ class ColumnSetting:
         self._col_number = col_number
         self._indicator_text = indicator_text
         self._name = name
-        if self._name.lower() == "website": #TODO: copied code => make one function to call
+        if (
+            self._name.lower() == "website"
+        ):  # TODO: copied code => make one function to call
             self._contains_hyperlink = True
 
     def __check_authorization(self) -> None:
@@ -70,7 +72,6 @@ class ColumnSetting:
         """
         return str(self.to_dict())
 
-
     def __lt__(self, other) -> bool:
         """Override the less than operator
 
@@ -86,14 +87,10 @@ class ColumnSetting:
             - Making a class sortable:
                 https://stackoverflow.com/questions/7152497/making-a-python-user-defined-class-sortable-hashable
         """
-        return (
-            -self.header_number,
-            self.indicator_text is None,
-            self.col_number
-        ) < (
+        return (-self.header_number, self.indicator_text is None, self.col_number) < (
             -other.header_number,
             other.indicator_text is None,
-            other.col_number
+            other.col_number,
         )
         # if self.header_number > other.header_number:
         #     return True
@@ -265,7 +262,9 @@ def main() -> None:
         - Sorting a list:
             https://docs.python.org/3/howto/sorting.html
     """
-    col_setting = ColumnSetting(name="col 0",col_number=0, read_only= False, header_number=3)
+    col_setting = ColumnSetting(
+        name="col 0", col_number=0, read_only=False, header_number=3
+    )
 
     print(f"col_setting: {col_setting}")
 
@@ -303,14 +302,15 @@ def main() -> None:
 
     cols = [
         col_setting,
-        ColumnSetting(name="col 1",col_number=1),
-        ColumnSetting(name="col 2",col_number=2),
-        ColumnSetting(name="col 3",col_number=3),
-        ColumnSetting(name="col 4",col_number=4, indicator_text="Is indicator"),
+        ColumnSetting(name="col 1", col_number=1),
+        ColumnSetting(name="col 2", col_number=2),
+        ColumnSetting(name="col 3", col_number=3),
+        ColumnSetting(name="col 4", col_number=4, indicator_text="Is indicator"),
     ]
     print(f"cols: {[str(x) for x in cols]}")
     cols.sort()
     print(f"cols sorted: {[str(x) for x in cols]}")
+
 
 if __name__ == "__main__":
     """main for testing purposes"""

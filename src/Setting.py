@@ -6,9 +6,9 @@ from warnings import warn
 
 from src.ColumnSetting import ColumnSetting
 
-
 DEFAULT_SETTING: str = "DEFAULT"
 DEFAULT_HEADER_SIZE: int = 4
+
 
 class Setting:
     """The settings object"""
@@ -37,10 +37,12 @@ class Setting:
             provide these, when creating a new setting from scratch
             header_size (int): The size of the initial row
         """
-        if (title == DEFAULT_SETTING and read_only is False):
+        if title == DEFAULT_SETTING and read_only is False:
             raise ValueError("default setting is read only")
-        if (title == DEFAULT_SETTING and field_names is None):
-            raise ValueError("field_names must be provided for default settings (HINT: do `[str(x) for x in range(num_cols)]`)")
+        if title == DEFAULT_SETTING and field_names is None:
+            raise ValueError(
+                "field_names must be provided for default settings (HINT: do `[str(x) for x in range(num_cols)]`)"
+            )
         if field_names is not None:
             read_only = False
 
@@ -54,8 +56,10 @@ class Setting:
         if field_names is None:
             # Field names of None => settings already exist load 'em
             if header_size != DEFAULT_HEADER_SIZE:
-                warn(f"loading results from saved settings, header_size of {header_size} is being ignored")
-            self.__load_settings() #TODO make load_settings return True/False for success, upon failure, fallback to default
+                warn(
+                    f"loading results from saved settings, header_size of {header_size} is being ignored"
+                )
+            self.__load_settings()  # TODO make load_settings return True/False for success, upon failure, fallback to default
         else:
             # Create the default column settings!
             for col, field_name in enumerate(field_names):
@@ -66,13 +70,12 @@ class Setting:
                 self._col_setting_map[col].name = field_name
             self.__reset_col_order()
 
-
     def __str__(self) -> str:
         """To string!
 
         Returns:
             setting_str (str): String represesntation of the settings
-	    """
+        """
         return str(
             {
                 "title": self._title,
@@ -97,14 +100,16 @@ class Setting:
             - Looping through a dictionary
                 https://www.w3schools.com/python/python_dictionaries_loop.asp
         """
-        #TODO: if setting does not exist, creating new setting
+        # TODO: if setting does not exist, creating new setting
         with open(self._PATH) as f:
             json_dict = json.load(f)
             json_dict = json_dict[self._title]
             setting_dict = json_dict["col_setting_map"]
 
             for key, value in setting_dict.items():
-                self._col_setting_map[int(key)] = ColumnSetting(read_only=self._read_only, **value)
+                self._col_setting_map[int(key)] = ColumnSetting(
+                    read_only=self._read_only, **value
+                )
 
             self._col_order = json_dict["col_order"]
             self._preamble = json_dict["preamble"]
@@ -232,17 +237,17 @@ class Setting:
         sorted_settings.sort()
         self._col_order = [col_setting.col_number for col_setting in sorted_settings]
 
-#    def swap_cols(self, col_one: int, col_two: int) -> None:
-#        """Swap the column ordering of the two columns
-#
-#        Args:
-#            col_one (int): First column to swap
-#            col_two (int): Second column to swap
-#        """
-#        self.__check_authorization()
-#        temp = self._col_order[col_one]
-#        self.col_order[col_one] = self._col_order[col_two]
-#        self.col_order[col_two] = temp
+    #    def swap_cols(self, col_one: int, col_two: int) -> None:
+    #        """Swap the column ordering of the two columns
+    #
+    #        Args:
+    #            col_one (int): First column to swap
+    #            col_two (int): Second column to swap
+    #        """
+    #        self.__check_authorization()
+    #        temp = self._col_order[col_one]
+    #        self.col_order[col_one] = self._col_order[col_two]
+    #        self.col_order[col_two] = temp
 
     def get_default(self, column: int) -> ColumnSetting:
         """Get the default settings for a column
@@ -263,7 +268,6 @@ class Setting:
             read_only=self._read_only,
         )
 
-
     def set_to_default(
         self,
         column: int,
@@ -276,13 +280,13 @@ class Setting:
         """
         self.__check_authorization()
         if column > self.n_cols:
-            warn(f"Requested to create column {column}, going to create column {self.n_cols} instead")
+            warn(
+                f"Requested to create column {column}, going to create column {self.n_cols} instead"
+            )
             column = self.n_cols
         self.update_setting(setting=self.get_default(column), create_new=create_new)
 
-    def update_setting(
-        self, setting: ColumnSetting, create_new: bool = False
-    ) -> None:
+    def update_setting(self, setting: ColumnSetting, create_new: bool = False) -> None:
         """Update the setting for the specific column
 
         Args:
@@ -306,14 +310,14 @@ class Setting:
         self._col_setting_map[column] = setting
         self.__reset_col_order()
 
-#    def delete_column(self, column: int) -> None:
-#        """Delete the column from the settings
-#
-#        Args:
-#            column (int): The column to remove
-#
-#        """
-#        raise NotImplementedError
+    #    def delete_column(self, column: int) -> None:
+    #        """Delete the column from the settings
+    #
+    #        Args:
+    #            column (int): The column to remove
+    #
+    #        """
+    #        raise NotImplementedError
 
     def get_setting(self, column: int) -> ColumnSetting:
         """Get the setting for a specific column
@@ -336,7 +340,7 @@ class Setting:
         Args:
             col (int): The columns which is an indicator
             text (str): The indicator text
-    	"""
+        """
         self.__check_authorization()
         if text:
             self._col_setting_map[col].indicator_text = text
@@ -362,11 +366,15 @@ def main() -> None:
     for col in default_setting.col_order:
         print(f"{col}: {default_setting.get_setting(col)}")
 
-
     non_default = Setting(
         title="My Settings",
         read_only=False,
-        field_names=["title field", "other field", "yet another", "this field indicates"]
+        field_names=[
+            "title field",
+            "other field",
+            "yet another",
+            "this field indicates",
+        ],
     )
     print(str(non_default))
     for col in non_default.col_order:
@@ -395,6 +403,7 @@ def main() -> None:
     non_default.save_settings()
 
     saved_settings = Setting(title="My Settings")
+    print(str(saved_settings))
 
 
 if __name__ == "__main__":

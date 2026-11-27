@@ -4,7 +4,7 @@
 
 from pathlib import Path
 
-from src.Setting import Setting #TODO: settings shtuff
+from src.Setting import Setting  # TODO: settings shtuff
 
 
 class CLI:
