@@ -8,6 +8,57 @@ from src.ColumnSetting import ColumnSetting
 
 DEFAULT_SETTING: str = "DEFAULT"
 DEFAULT_HEADER_SIZE: int = 4
+DEFAULT_PATH: Path = Path("settings/settings.json")
+
+
+def get_saved_settings(
+    n_cols:int=-1,
+    field_names: list[str] | None = None,
+) -> list[str]:
+    """Get those settings which are currently saved!
+
+    Args:
+        n_cols (int): The number of columns in the csv
+        field_names (list[str]): The names of the columns in th csv
+
+    Returns:
+        setting_names (list[str]): The currently saved settings
+
+    Resources:
+        - Loop through key,value of a dict:
+            https://www.w3schools.com/python/python_dictionaries_loop.asp
+    """
+    if field_names is not None and n_cols == -1:
+        n_cols = len(field_names)
+
+    with open(DEFAULT_PATH) as f:
+        json_dict = json.load(f)
+
+    if n_cols == -1:
+        # Return all setting names
+        return list(json_dict.keys()[1:]) # First key is not for user to see
+
+    setting_names = []
+    for i, key in enumerate(json_dict):
+        if i == 0:
+            # First entry is a note to self, not an actual setting
+            continue
+
+        temp_setting = Setting(title=key)
+        if temp_setting.n_cols == key:
+            if field_names is None:
+                setting_names.append(key)
+                continue
+            setting_col_names = temp_setting.col_names()
+            for i, set_col_name in enumerate(setting_col_names):
+                if field_names[i] != set_col_name[i]:
+                    # Do not include settings with different header names
+                    continue
+            # A perfect match -> save it
+            setting_names.append(key)
+
+    return setting_names
+
 
 
 class Setting:
@@ -19,7 +70,7 @@ class Setting:
     _preamble: str
     _col_order: list[int]
     _col_setting_map: dict[int, ColumnSetting]
-    _PATH: Path = Path("settings/settings.json")
+    _PATH: Path = DEFAULT_PATH
 
     def __init__(
         self,
@@ -83,6 +134,7 @@ class Setting:
                 "track_date": self._track_date,
                 "preamble": self._preamble,
                 "col_order": self._col_order,
+                "col_names": self.col_names(),
             }
         )
 
@@ -345,10 +397,19 @@ class Setting:
         if text:
             self._col_setting_map[col].indicator_text = text
         else:
-            indicator_text = f"Is {self._col_setting_map[col].name}"
+            indicator_text = self._col_setting_map[col].name
             self._col_setting_map[col].indicator_text = indicator_text.title()
 
         self.__reset_col_order()
+
+    def col_names(self) -> list[str]:
+        """Get the column names of this Setting
+
+        Returns:
+            col_names (list[str]): The column names
+	    """
+        return [value.name for value in self._col_setting_map.values()]
+
 
 def main() -> None:
     """main for testing purposes"""
