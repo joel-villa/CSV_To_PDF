@@ -18,7 +18,6 @@ class Setting:
     _title: str
     _preamble: str
     _col_order: list[int]
-    #TODO: replace col_order with header column, indicator columns, and the rest of the columns!
     _col_setting_map: dict[int, ColumnSetting]
     _PATH: Path = Path("settings/settings.json")
 
@@ -58,14 +57,12 @@ class Setting:
         else:
             # Create the default column settings!
             for col, field_name in enumerate(field_names):
-                self._col_setting_map[col] = ColumnSetting(
-                    name=field_name,
-                    read_only=False,
+                self.set_to_default(
+                    column=col,
+                    create_new=True,
                 )
-
-                if col == 0:
-                    # Header field is first column by default!
-                    self._col_setting_map[col].header_number = header_size
+                self._col_setting_map[col].name = field_name
+            self.reset_col_order()
 
 
     def __str__(self) -> str:
@@ -218,10 +215,15 @@ class Setting:
         self._preamble = new_val
 
     def reset_col_order(self) -> None:
-        """Reset the column ordering (just increasing)"""
-        self.__check_authorization()
-        num_cols = self.n_cols
-        self._col_order = list(range(num_cols))
+        """Reset the column ordering (just increasing)
+
+        Resources:
+            - dictionary keys
+                https://stackoverflow.com/questions/16819222/how-do-i-return-dictionary-keys-as-a-list-in-python
+        """
+        col_order = list(self._col_setting_map.keys())
+        col_order.sort()
+        self._col_order = col_order
 
     def swap_cols(self, col_one: int, col_two: int) -> None:
         """Swap the column ordering of the two columns
@@ -235,8 +237,41 @@ class Setting:
         self.col_order[col_one] = self._col_order[col_two]
         self.col_order[col_two] = temp
 
+    def get_default(self, column: int) -> ColumnSetting:
+        """Get the default settings for a column
+
+        Args:
+            column (int): The column to get the default settings of
+
+        Returns:
+             def_setting (ColumnSetting): The default column setting
+        """
+        header_number = 0
+        if column == 0:
+            header_number = DEFAULT_HEADER_SIZE
+        return ColumnSetting(
+            name=str(column),
+            col_number=column,
+            header_number=header_number,
+            read_only=self._read_only,
+        )
+
+
+    def set_to_default(
+        self,
+        column: int,
+        create_new: bool = False,
+    ) -> None:
+        """Set the column's settings back to default
+
+        Args:
+            column (int): The column to reset
+        """
+        self.__check_authorization()
+        self.update_setting(setting=self.get_default(column), create_new=create_new)
+
     def update_setting(
-        self, column: int, setting: ColumnSetting, create_new: bool = False
+        self, setting: ColumnSetting, create_new: bool = False
     ) -> None:
         """Update the setting for the specific column
 
@@ -248,6 +283,7 @@ class Setting:
             default at the same time
         """
         self.__check_authorization()
+        column = setting.col_number
         if self._col_setting_map.get(column) is None:
             if create_new is False:
                 raise ValueError(
@@ -305,14 +341,20 @@ def test_setting(setting: Setting) -> None:
         setting (Setting): the setting to test
     """
     num_cols = 7
-    default_setting = ColumnSetting()
     num_exceptions = 0
     possible_exceptions = 0
 
     possible_exceptions += 1
     try:
         for i in range(num_cols):
-            setting.update_setting(column=i, setting=default_setting, create_new=True)
+            col_setting = ColumnSetting(
+                col_number=i,
+                name=str(i),
+            )
+            setting.update_setting(
+                setting=col_setting,
+                create_new=True,
+            )
     except ValueError:
         num_exceptions += 1
 
@@ -323,8 +365,7 @@ def test_setting(setting: Setting) -> None:
     possible_exceptions += 1
     try:
         setting.update_setting(
-            column=0,
-            setting=ColumnSetting(read_only=True, indicator_text="Just messing around"),
+            setting=ColumnSetting(col_number=0, name="rowest zeroest", read_only=True, indicator_text="Just messing around"),
         )
     except ValueError:
         num_exceptions += 1
