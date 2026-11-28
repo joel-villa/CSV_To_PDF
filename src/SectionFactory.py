@@ -40,10 +40,9 @@ class SectionFactory:
                 https://www.geeksforgeeks.org/python/create-multiple-copies-of-a-string-in-python-by-using-multiplication-operator/
         """
 
-        row_idxs = np.argsort(np.array(self._setting.col_order))
         section = ""
 
-        for i in row_idxs:
+        for i in self._setting.col_order:
             field_value = field_values[i]
             field_setting = self._setting.get_setting(i)
             is_header = self._setting.col_order[i] == 0
