@@ -38,7 +38,11 @@ class SectionFactory:
                 https://www.markdownguide.org/basic-syntax/
             - Duplicating a string's text:
                 https://www.geeksforgeeks.org/python/create-multiple-copies-of-a-string-in-python-by-using-multiplication-operator/
+            - REplace string to that good stuff:
+                https://www.w3schools.com/python/ref_string_replace.asp
         """
+        # Make newlines work:
+        field_values = [x.replace("\n", "  \n") for x in field_values]
 
         section = ""
 
