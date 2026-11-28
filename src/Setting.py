@@ -389,12 +389,14 @@ class Setting:
         self,
         col: int,
         text: str | None = None,
+        bolden: bool = True,
     ) -> None:
         """Set the indicator text of the given columns
 
         Args:
             col (int): The columns which is an indicator
             text (str): The indicator text
+            bolden (bool): Is it bold?
         """
         self.__check_authorization()
         if text:
@@ -402,6 +404,8 @@ class Setting:
         else:
             indicator_text = self._col_setting_map[col].name
             self._col_setting_map[col].indicator_text = indicator_text.title()
+
+        self._col_setting_map[col].is_bold = bolden
 
         self.__reset_col_order()
 
