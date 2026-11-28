@@ -1,7 +1,5 @@
 """Makes Sections based on some Settings"""
 
-import numpy as np
-
 from src.Setting import Setting
 
 
