@@ -13,8 +13,9 @@ git clone https://github.com/joel-villa/CSV_To_PDF.git
 
 ### 2. Install python if necessary (see: https://docs.python-guide.org/starting/install3/linux/)
 
-### 3. Create a virtual python environment inside the CSV_to_PDF folder (this is
-  where all installed python resources will live)
+### 3. Create a virtual python environment inside the CSV_to_PDF folder 
+
+this is where all installed python resources will live
 
 ```
 cd CSV_to_PDF
