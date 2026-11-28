@@ -9,51 +9,17 @@ class SectionFactory:
     """Creates Sections (string representation of rows) based on settings"""
 
     _setting: Setting
-    _field_names: list[str] | None
 
     def __init__(
         self,
-        setting: Setting | None = None,
+        setting: Setting,
     ) -> None:
         """Create a Section Factory
 
         Args:
             setting (Setting): Configuration of file output
         """
-        self._field_names = None
-
-        if setting is None:
-            self._setting = Setting()
-        else:
-            self._setting = setting
-
-    @property
-    def field_names(self):
-        """Need a getter, even though I don't need a getter (so I can use a
-        setter)
-
-        Returns:
-             NOTHING, raises an error, field_names is write only!
-        """
-        raise AttributeError("field_names is write_only")
-
-    @field_names.setter
-    def field_names(self, value: list[str]) -> None:
-        """A setter for field_names
-
-        Args:
-            value (list[str]): The field names of the columns
-
-        Resources:
-            - Write only class variables:
-                https://realpython.com/python-property/#providing-write-only-attributes
-        """
-        if self._field_names is not None:
-            # TODO: do we really need to do this? May be too handholdy (be cautious of throwing ERRORS is good coding practices)
-            raise AttributeError(
-                f"field_names is not allowed to be overrideable, currently has value of: {self._field_names}"
-            )
-        self._field_names = value
+        self._setting = setting
 
     def to_section(self, field_values: list[str]) -> str:
         """Create a section given the field values
@@ -72,18 +38,15 @@ class SectionFactory:
                 https://www.markdownguide.org/basic-syntax/
             - Duplicating a string's text:
                 https://www.geeksforgeeks.org/python/create-multiple-copies-of-a-string-in-python-by-using-multiplication-operator/
+            - REplace string to that good stuff:
+                https://www.w3schools.com/python/ref_string_replace.asp
         """
-        if self._field_names is None:
-            self._field_names = [str(x) for x in range(self._setting.n_cols)]
+        # Make newlines work:
+        field_values = [x.replace("\n", "  \n") for x in field_values]
 
-        row_idxs = np.argsort(np.array(self._setting.col_order))
         section = ""
 
-        for i in row_idxs:
-            #            if i >= len(field_values):
-            #                #TODO actaully handle this (use default column setting)
-            #                break
-            field_name = self._field_names[i]
+        for i in self._setting.col_order:
             field_value = field_values[i]
             field_setting = self._setting.get_setting(i)
             is_header = self._setting.col_order[i] == 0
@@ -104,7 +67,7 @@ class SectionFactory:
                 # Header value is a special case: no field_name, and need ##
                 field_str = f"{field_value}"
             else:
-                field_str = f"{field_name}: {field_value}"
+                field_str = f"{field_setting.name}: {field_value}"
 
             if field_setting.indicator_text is not None:
                 if field_setting.contains_hyperlink:
