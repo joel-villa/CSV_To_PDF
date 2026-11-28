@@ -4,14 +4,17 @@ If you're reading this, I bet you're a very cool person B)
 
 ## Running The Program (in Linux)
 
-### 1. Clone the repository in the terminal command line to your desired directory--for
-notes on installing git: https://git-scm.com/install/linux
+### 1. Clone the repository in the terminal command line to your desired directory
+
+For notes on installing git: https://git-scm.com/install/linux
 
 ```
 git clone https://github.com/joel-villa/CSV_To_PDF.git
 ```
 
-### 2. Install python if necessary (see: https://docs.python-guide.org/starting/install3/linux/)
+### 2. Install python if necessary 
+
+See: https://docs.python-guide.org/starting/install3/linux/
 
 ### 3. Create a virtual python environment inside the CSV_to_PDF folder 
 
